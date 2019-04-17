@@ -16,7 +16,8 @@
  *
  */
 
-using Microsoft.Extensions.Configuration;
+#if !NET_FX45
+ using Microsoft.Extensions.Configuration;
 
 namespace SkyApm.Utilities.Configuration
 {
@@ -25,3 +26,6 @@ namespace SkyApm.Utilities.Configuration
         IConfiguration Create();
     }
 }
+#endif
+
+

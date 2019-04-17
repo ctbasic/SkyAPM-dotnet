@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\build\common.props" />
   <PropertyGroup>
-    <TargetFrameworks>net461;net462;net47;net471</TargetFrameworks>
+    <TargetFrameworks>net45;net461</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>$(PackagePrefix).Agent.AspNet</AssemblyName>
@@ -10,6 +10,9 @@
     <PackageTags>SkyWalking;APM;Tracing</PackageTags>
     <Description>$(PackagePrefix) ASP.NET Agent.</Description>
     <RootNamespace>SkyApm.Agent.AspNet</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
+    <DefineConstants>$(DefineConstants);NET_FX45</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SkyApm.Core\SkyApm.Core.csproj" />
@@ -25,9 +28,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.4" />
+    <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Web.Infrastructure" Version="1.0.0" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="1.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="Autofac" Version="4.9.2" />
   </ItemGroup>
 </Project>

@@ -17,16 +17,18 @@
  */
 
 using System;
-using Serilog;
-using Serilog.Events;
-using Microsoft.Extensions.Logging;
 using SkyApm.Config;
-using ILogger = SkyApm.Logging.ILogger;
-using ILoggerFactory = SkyApm.Logging.ILoggerFactory;
-using MSLoggerFactory = Microsoft.Extensions.Logging.LoggerFactory;
+
 
 namespace SkyApm.Utilities.Logging
 {
+#if NETSTANDARD
+    using Serilog;
+    using Serilog.Events;
+    using Microsoft.Extensions.Logging;
+
+    using MSLoggerFactory = Microsoft.Extensions.Logging.LoggerFactory;
+
     public class DefaultLoggerFactory : SkyApm.Logging.ILoggerFactory
     {
         private const string outputTemplate =
@@ -63,4 +65,19 @@ namespace SkyApm.Utilities.Logging
                 : LogEventLevel.Error;
         }
     }
+#else
+    using log4net;
+    public class DefaultLoggerFactory : SkyApm.Logging.ILoggerFactory
+    {
+        public DefaultLoggerFactory(IConfigAccessor configAccessor)
+        {
+        }
+
+        public SkyApm.Logging.ILogger CreateLogger(Type type)
+        {
+            var logger = LogManager.GetLogger(type);
+            return new DefaultLogger(logger);
+        }
+    }
+#endif
 }

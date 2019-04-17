@@ -19,10 +19,40 @@
 using CommonServiceLocator;
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
+using SkyApm.Utilities.DependencyInjection;
 
 namespace SkyApm.Agent.AspNet
 {
+#if NET_FX45
+    internal class ServiceProviderLocator : IServiceLocator
+    {
+        private readonly IServiceProvider _serviceProvider;
+
+        public ServiceProviderLocator(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
+        public object GetService(Type serviceType) => _serviceProvider.GetService(serviceType);
+
+        public object GetInstance(Type serviceType) => _serviceProvider.GetService(serviceType);
+
+        public object GetInstance(Type serviceType, string key) => GetInstance(serviceType);
+
+        public TService GetInstance<TService>() => (TService)GetInstance(typeof(TService));
+
+        public TService GetInstance<TService>(string key) => (TService)GetInstance(typeof(TService));
+
+        public IEnumerable<TService> GetAllInstances<TService>() => (IEnumerable<TService>)_serviceProvider.GetService(typeof(IEnumerable<TService>));
+
+        public IEnumerable<object> GetAllInstances(Type serviceType)
+        {
+            Type enumerableOfType = typeof(IEnumerable<>).MakeGenericType(serviceType);
+            return (IEnumerable<object>)_serviceProvider.GetService(enumerableOfType);
+        }
+    }
+#else
+    using Microsoft.Extensions.DependencyInjection;
     internal class ServiceProviderLocator : IServiceLocator
     {
         private readonly IServiceProvider _serviceProvider;
@@ -46,4 +76,5 @@ namespace SkyApm.Agent.AspNet
 
         public IEnumerable<TService> GetAllInstances<TService>() => _serviceProvider.GetServices<TService>();
     }
+#endif
 }

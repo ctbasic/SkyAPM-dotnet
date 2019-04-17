@@ -18,17 +18,27 @@
 
 using System.Threading;
 using SkyApm.Tracing.Segments;
+using SkyApm.Abstractions.Common;
 
 namespace SkyApm.Tracing
 {
     public class ExitSegmentContextAccessor : IExitSegmentContextAccessor
     {
-        private readonly AsyncLocal<SegmentContext> _segmentContext = new AsyncLocal<SegmentContext>();
+        //private readonly AsyncLocal<SegmentContext> _segmentContext = new AsyncLocal<SegmentContext>();
 
         public SegmentContext Context
         {
-            get => _segmentContext.Value;
-            set => _segmentContext.Value = value;
+            //get => _segmentContext.Value;
+            //set => _segmentContext.Value = value;
+
+            get => ExitSegmentContext;
+            set => ExitSegmentContext = value;
+        }
+
+        private SegmentContext ExitSegmentContext
+        {
+            get => (SegmentContext)CallContextUtils.GetData("ExitSegmentContext");
+            set => CallContextUtils.SetData("ExitSegmentContext", value);
         }
     }
 }

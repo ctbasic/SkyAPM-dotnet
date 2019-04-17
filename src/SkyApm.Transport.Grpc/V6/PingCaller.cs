@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
 using SkyWalking.NetworkProtocol;
@@ -44,7 +45,7 @@ namespace SkyApm.Transport.Grpc.V6
         {
             if (!_connectionManager.Ready)
             {
-                return Task.CompletedTask;
+                return CustomTaskUtils.ReturnCompletedTask();
             }
 
             var connection = _connectionManager.GetConnection();
@@ -55,7 +56,7 @@ namespace SkyApm.Transport.Grpc.V6
                     {
                         ServiceInstanceId = request.ServiceInstanceId,
                         ServiceInstanceUUID = request.InstanceId,
-                        Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                        Time = DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds()
                     }, null, _config.GetTimeout(), cancellationToken);
                 },
                 () => ExceptionHelpers.PingError);

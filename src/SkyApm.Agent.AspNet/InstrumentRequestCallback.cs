@@ -23,6 +23,7 @@ using SkyApm.Config;
 using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
 using SpanLayer = SkyApm.Tracing.Segments.SpanLayer;
+using SkyApm.Agent.AspNet.CtCustom;
 
 namespace SkyApm.Agent.AspNet
 {
@@ -61,11 +62,12 @@ namespace SkyApm.Agent.AspNet
             context.Span.AddLog(LogEvent.Event("AspNet BeginRequest"),
                 LogEvent.Message(
                     $"Request starting {httpContext.Request.Url.Scheme} {httpContext.Request.HttpMethod} {httpContext.Request.Url.OriginalString}"));
+            AspNetWebUtils.SegmentContext = context;
         }
 
         public void ApplicationOnEndRequest(object sender, EventArgs e)
         {
-            var context = _contextAccessor.Context;
+            var context = _contextAccessor.Context ?? AspNetWebUtils.SegmentContext;
             if (context == null)
             {
                 return;

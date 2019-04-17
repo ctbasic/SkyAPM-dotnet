@@ -17,13 +17,61 @@
  */
 
 using System;
-using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
 using SkyApm.Config;
 
 namespace SkyApm.Utilities.Configuration
 {
+#if NET_FX45
+    using System.IO;
+    using Newtonsoft.Json.Linq;
+
+    public class ConfigAccessor : IConfigAccessor
+    {
+
+        JObject _configuration;
+
+
+        public ConfigAccessor(IEnvironmentProvider environmentProvider)
+        {
+            _configuration = new JObject();
+            _configuration.AddSkyWalkingDefaultConfig();
+
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + "skyapm.json";
+            if (File.Exists(configFile))
+            {
+                string text = System.IO.File.ReadAllText(configFile);
+                _configuration = JObject.Parse(text);
+            }
+        }
+
+        public T Get<T>() where T : class, new()
+        {
+            var config = typeof(T).GetCustomAttribute<ConfigAttribute>();
+            var sections = config.Sections;
+            var childJObject = _configuration;
+            foreach (var section in sections)
+            {
+                childJObject = (JObject)childJObject[section];
+            }
+
+            return childJObject.ToObject<T>();
+        }
+
+        public T Value<T>(string key, params string[] sections)
+        {
+            var childJObject = _configuration;
+            foreach (var section in sections)
+            {
+                childJObject = (JObject)_configuration[section];
+            }
+
+            return childJObject.ToObject<T>();
+        }
+    }
+#else
+    using Microsoft.Extensions.Configuration;
+    using System.Linq.Expressions;
     public class ConfigAccessor : IConfigAccessor
     {
         private readonly IConfiguration _configuration;
@@ -58,4 +106,5 @@ namespace SkyApm.Utilities.Configuration
             ).Compile();
         }
     }
+#endif
 }

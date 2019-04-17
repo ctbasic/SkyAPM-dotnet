@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
@@ -57,7 +58,7 @@ namespace SkyApm.Sampling
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             Reset();
-            return Task.CompletedTask;
+            return CustomTaskUtils.ReturnCompletedTask();
         }
         
         private void Reset()

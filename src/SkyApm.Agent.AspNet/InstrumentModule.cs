@@ -16,11 +16,19 @@
  *
  */
 
+using System;
 using CommonServiceLocator;
-using Microsoft.Extensions.DependencyInjection;
 using System.Web;
+#if !NET_FX45
+using Microsoft.Extensions.DependencyInjection;
 using Nito.AsyncEx;
+#endif
+
+#if NET_FX45
+using System.Threading.Tasks;
+#endif
 using SkyApm.Agent.AspNet.Extensions;
+using SkyApm.Utilities.DependencyInjectionEx.Dependency;
 
 namespace SkyApm.Agent.AspNet
 {
@@ -28,15 +36,33 @@ namespace SkyApm.Agent.AspNet
     {
         public InstrumentModule()
         {
-            var serviceProvider = new ServiceCollection().AddSkyAPMCore().BuildServiceProvider();
-            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
-            ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
+//#if NET_FX45
+//            var serviceProvider = new AutofacServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+//            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+//#else
+//            var serviceProvider = new ServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+//            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+//#endif
+//            ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
         }
 
         public void Init(HttpApplication application)
         {
-            var startup = ServiceLocator.Current.GetInstance<IInstrumentStartup>();
-            AsyncContext.Run(() => startup.StartAsync());
+//            var startup = ServiceLocator.Current.GetInstance<IInstrumentStartup>();
+//            if (startup == null)
+//            {
+//                throw new NotImplementedException("IInstrumentStartup instance is null");
+//            }
+
+//#if NET_FX45
+//            Task.Run(() =>
+//            {
+//                startup.StartAsync().Wait();
+//            });
+//#else
+//                AsyncContext.Run(() => startup.StartAsync());
+//#endif
+
             var requestCallback = ServiceLocator.Current.GetInstance<InstrumentRequestCallback>();
             application.BeginRequest += requestCallback.ApplicationOnBeginRequest;
             application.EndRequest += requestCallback.ApplicationOnEndRequest;
@@ -44,8 +70,15 @@ namespace SkyApm.Agent.AspNet
 
         public void Dispose()
         {
-            var startup = ServiceLocator.Current.GetInstance<IInstrumentStartup>();
-            AsyncContext.Run(() => startup.StopAsync());
+//            var startup = ServiceLocator.Current.GetInstance<IInstrumentStartup>();
+//#if NET_FX45
+//            Task.Run(() =>
+//            {
+//                startup.StopAsync().Wait();
+//            });
+//#else
+//                AsyncContext.Run(() => startup.StopAsync());
+//#endif
         }
     }
 }

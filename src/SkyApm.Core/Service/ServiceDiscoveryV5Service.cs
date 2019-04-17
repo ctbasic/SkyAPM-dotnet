@@ -20,6 +20,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
@@ -85,7 +86,7 @@ namespace SkyApm.Service
                 var value = await Polling(3,
                     () => skyApmClient.RegisterApplicationInstanceAsync(RuntimeEnvironment.ServiceId.Value,
                         RuntimeEnvironment.InstanceId,
-                        DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), osInfoRequest, cancellationToken),
+                        DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds(), osInfoRequest, cancellationToken),
                     cancellationToken);
                 if (value.HasValue && RuntimeEnvironment is RuntimeEnvironment environment)
                 {
@@ -121,7 +122,7 @@ namespace SkyApm.Service
                 try
                 {
                     await skyApmClient.HeartbeatAsync(RuntimeEnvironment.ServiceInstanceId.Value,
-                        DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), cancellationToken);
+                        DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds(), cancellationToken);
                     Logger.Debug($"Heartbeat at {DateTimeOffset.UtcNow}.");
                 }
                 catch (Exception e)

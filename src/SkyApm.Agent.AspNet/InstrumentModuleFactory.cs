@@ -18,9 +18,18 @@
 
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using System.Web;
+using CommonServiceLocator;
 using SkyApm.Agent.AspNet;
+using SkyApm.Agent.AspNet.Extensions;
+#if !NET_FX45
+using Microsoft.Extensions.DependencyInjection;
+#endif
 
-[assembly:PreApplicationStartMethod(typeof(InstrumentModuleFactory), nameof(InstrumentModuleFactory.Create))]
+#if NET_FX45
+using SkyApm.Utilities.DependencyInjectionEx.Dependency;
+#endif
+
+[assembly: PreApplicationStartMethod(typeof(InstrumentModuleFactory), nameof(InstrumentModuleFactory.Create))]
 
 namespace SkyApm.Agent.AspNet
 {
@@ -28,6 +37,18 @@ namespace SkyApm.Agent.AspNet
     {
         public static void Create()
         {
+#if NET_FX45
+            var serviceProvider = new AutofacServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+#else
+            var serviceProvider = new ServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+#endif
+            ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
+
+            var ctSkyApmAgent = ServiceLocator.Current.GetInstance<ICtSkyApmAgent>();
+            ctSkyApmAgent.StartAsync();
+
             DynamicModuleUtility.RegisterModule(typeof(InstrumentModule));
         }
     }

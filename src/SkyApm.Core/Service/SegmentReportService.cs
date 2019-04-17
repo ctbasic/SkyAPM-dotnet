@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
 using SkyApm.Transport;
@@ -51,7 +52,7 @@ namespace SkyApm.Service
         protected override Task Stopping(CancellationToken cancellationToke)
         {
             _dispatcher.Close();
-            return Task.CompletedTask;
+            return CustomTaskUtils.ReturnCompletedTask();
         }
     }
 }

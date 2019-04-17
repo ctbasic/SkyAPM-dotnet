@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Microsoft.Utilities.DependencyInjection (IServiceCollection) support for $(Product).</Description>
     <AssemblyTitle>$(PackagePrefix).Utilities.DependencyInjection</AssemblyTitle>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>$(PackagePrefix).Utilities.DependencyInjection</AssemblyName>
     <PackageId>$(PackagePrefix).Utilities.DependencyInjection</PackageId>
     <PackageTags>SkyWalking;APM;Diagnostics</PackageTags>
@@ -11,10 +11,20 @@
     </PackageReleaseNotes>
     <RootNamespace>SkyApm.Utilities.DependencyInjection</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
+    <DefineConstants>$(DefineConstants);NET_FX</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SkyApm.Core\SkyApm.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45'">
+    <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Unity" Version="5.10.3" />
   </ItemGroup>
 </Project>

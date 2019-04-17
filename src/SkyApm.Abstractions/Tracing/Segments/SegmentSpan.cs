@@ -21,6 +21,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SkyApm.Common;
+using SkyApm.Abstractions.Common;
 
 namespace SkyApm.Tracing.Segments
 {
@@ -30,7 +31,7 @@ namespace SkyApm.Tracing.Segments
 
         public int ParentSpanId { get; } = -1;
 
-        public long StartTime { get; } = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        public long StartTime { get; } = DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds();
 
         public long EndTime { get; private set; }
 
@@ -75,13 +76,13 @@ namespace SkyApm.Tracing.Segments
 
         public void AddLog(params LogEvent[] events)
         {
-            var log = new SpanLog(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), events);
+            var log = new SpanLog(DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds(), events);
             Logs.AddLog(log);
         }
 
         public void Finish()
         {
-            EndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            EndTime = DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds();
         }
     }
 
