@@ -16,10 +16,12 @@
  *
  */
 
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace SkyApm.Utilities.DependencyInjection
 {
+#if NETSTANDARD
+using Microsoft.Extensions.DependencyInjection;
     public static class ServiceCollectionExtensions
     {
         public static SkyApmExtensions AddSkyApmExtensions(this IServiceCollection services)
@@ -27,4 +29,14 @@ namespace SkyApm.Utilities.DependencyInjection
             return new SkyApmExtensions(services);
         }
     }
+#else
+    using Autofac;
+    public static class ServiceCollectionExtensions
+    {
+        public static SkyApmExtensions AddSkyApmExtensions(this IServiceCollectionContainer services)
+        {
+            return new SkyApmExtensions(services);
+        }
+    }
+#endif
 }

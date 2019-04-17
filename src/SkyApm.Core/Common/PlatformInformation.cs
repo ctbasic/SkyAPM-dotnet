@@ -28,6 +28,9 @@ namespace SkyApm.Common
 
         public static string GetOSName()
         {
+#if NET_FX45
+            return WINDOWS;
+#else
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return WINDOWS;
@@ -42,6 +45,7 @@ namespace SkyApm.Common
             }
 
             return "Unknown";
+#endif
         }
     }
 }

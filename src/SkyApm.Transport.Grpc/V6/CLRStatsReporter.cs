@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
 using SkyWalking.NetworkProtocol;
@@ -77,7 +78,7 @@ namespace SkyApm.Transport.Grpc.V6
                         MaxWorkerThreads = statsRequest.Thread.MaxWorkerThreads,
                         MaxCompletionPortThreads = statsRequest.Thread.MaxCompletionPortThreads
                     },
-                    Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                    Time = DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds()
                 };
                 request.Metrics.Add(metric);
                 var client = new CLRMetricReportService.CLRMetricReportServiceClient(connection);

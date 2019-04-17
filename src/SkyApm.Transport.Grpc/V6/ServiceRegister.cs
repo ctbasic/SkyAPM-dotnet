@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
@@ -91,7 +92,7 @@ namespace SkyApm.Transport.Grpc.V6
                     {
                         ServiceId = serviceInstanceRequest.ServiceId,
                         InstanceUUID = serviceInstanceRequest.InstanceUUID,
-                        Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+                        Time = DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds()
                     };
 
                     instance.Properties.Add(new KeyStringValuePair

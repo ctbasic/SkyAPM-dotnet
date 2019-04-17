@@ -18,6 +18,7 @@
 
 using System;
 using System.Threading;
+using SkyApm.Abstractions.Common;
 
 namespace SkyApm.Tracing
 {
@@ -35,7 +36,7 @@ namespace SkyApm.Tracing
         {
             return new UniqueId(_runtimeEnvironment.ServiceInstanceId.Value,
                 Thread.CurrentThread.ManagedThreadId,
-                DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() * 10000 + GetSequence());
+                DateTimeOffset.UtcNow.ConvertToUnixTimeMilliseconds() * 10000 + GetSequence());
         }
 
         private long GetSequence()

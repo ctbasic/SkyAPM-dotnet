@@ -15,14 +15,14 @@
  * limitations under the License.
  *
  */
-
 using System;
-using Microsoft.Extensions.Logging;
-using ILogger = SkyApm.Logging.ILogger;
-using MSLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace SkyApm.Utilities.Logging
 {
+#if NETSTANDARD
+    using Microsoft.Extensions.Logging;
+    using MSLogger = Microsoft.Extensions.Logging.ILogger;
+
     internal class DefaultLogger : SkyApm.Logging.ILogger
     {
         private readonly MSLogger _readLogger;
@@ -57,4 +57,43 @@ namespace SkyApm.Utilities.Logging
             _readLogger.LogTrace(message);
         }
     }
+#else
+    using Log4NetLogger = log4net.ILog;
+
+    internal class DefaultLogger : SkyApm.Logging.ILogger
+    {
+        private readonly Log4NetLogger _readLogger;
+
+        public DefaultLogger(log4net.ILog readLogger)
+        {
+            _readLogger = readLogger;
+        }
+
+        public void Debug(string message)
+        {
+            _readLogger.Debug(message);
+        }
+
+        public void Information(string message)
+        {
+            _readLogger.Info(message);
+        }
+
+        public void Warning(string message)
+        {
+            _readLogger.Warn(message);
+        }
+
+        public void Error(string message, Exception exception)
+        {
+            _readLogger.Error(message + Environment.NewLine + exception);
+        }
+
+        public void Trace(string message)
+        {
+            _readLogger.Debug(message);
+        }
+    }
+#endif
+
 }

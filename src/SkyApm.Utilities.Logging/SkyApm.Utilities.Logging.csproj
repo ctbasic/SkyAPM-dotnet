@@ -4,7 +4,7 @@
     <PropertyGroup>
         <Description>Microsoft.Utilities.Logging support for $(Product).</Description>
         <AssemblyTitle>$(PackagePrefix).Utilities.Logging</AssemblyTitle>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
         <AssemblyName>$(PackagePrefix).Utilities.Logging</AssemblyName>
         <PackageId>$(PackagePrefix).Utilities.Logging</PackageId>
         <PackageTags>SkyWalking;APM;Diagnostics</PackageTags>
@@ -12,13 +12,22 @@
         </PackageReleaseNotes>
         <RootNamespace>SkyApm.Utilities.Logging</RootNamespace>
     </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
+      <DefineConstants>$(DefineConstants);NET_FX45</DefineConstants>
+    </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
         <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
     </ItemGroup>
-
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.0" />
+    </ItemGroup>
+    <ItemGroup Condition=" '$(TargetFramework)' == 'net45'">
+      <PackageReference Include="log4net" Version="2.0.8" />
+    </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\SkyApm.Abstractions\SkyApm.Abstractions.csproj" />
     </ItemGroup>

@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  */
-
+#if !NET_FX45
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
@@ -73,3 +73,4 @@ namespace SkyApm.Utilities.Configuration
         }
     }
 }
+#endif

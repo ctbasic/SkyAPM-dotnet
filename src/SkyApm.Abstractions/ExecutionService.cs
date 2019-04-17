@@ -19,6 +19,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Logging;
 
 namespace SkyApm
@@ -43,7 +44,7 @@ namespace SkyApm
             var source = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token, cancellationToken);
             _timer = new Timer(Callback, source, DueTime, Period);
             Logger.Information($"Loaded instrument service [{GetType().FullName}].");
-            return Task.CompletedTask;
+            return CustomTaskUtils.ReturnCompletedTask();
         }
 
         public async Task StopAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -68,7 +69,7 @@ namespace SkyApm
 
         protected virtual bool CanExecute() => RuntimeEnvironment.Initialized;
         
-        protected virtual Task Stopping(CancellationToken cancellationToke) => Task.CompletedTask;
+        protected virtual Task Stopping(CancellationToken cancellationToke) => CustomTaskUtils.ReturnCompletedTask();
 
         protected abstract TimeSpan DueTime { get; }
 

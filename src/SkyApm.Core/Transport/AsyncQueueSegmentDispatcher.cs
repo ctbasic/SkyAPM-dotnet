@@ -20,6 +20,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using SkyApm.Abstractions.Common;
 using SkyApm.Config;
 using SkyApm.Logging;
 using SkyApm.Tracing.Segments;
@@ -92,7 +93,7 @@ namespace SkyApm.Transport
 
             Interlocked.Exchange(ref _offset, _segmentQueue.Count);
 
-            return Task.CompletedTask;
+            return CustomTaskUtils.ReturnCompletedTask();
         }
 
         public void Close()

@@ -19,31 +19,53 @@
 using SkyApm.Tracing.Segments;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using SkyApm.Abstractions.Common;
 
 namespace SkyApm.Tracing
 {
     public class LocalSegmentContextAccessor : ILocalSegmentContextAccessor
     {
         private readonly ConditionalWeakTable<SegmentContext, SegmentContext> _parent = new ConditionalWeakTable<SegmentContext, SegmentContext>();
-        private readonly AsyncLocal<SegmentContext> _segmentContext = new AsyncLocal<SegmentContext>();
+        //private readonly AsyncLocal<SegmentContext> _segmentContext = new AsyncLocal<SegmentContext>();
 
         public SegmentContext Context
         {
-            get => _segmentContext.Value;
+            //get => _segmentContext.Value;
+            //set
+            //{
+            //    var current = _segmentContext.Value;
+            //    if (value == null)
+            //    {
+            //        if (_parent.TryGetValue(current, out var parent))
+            //            _segmentContext.Value = parent;
+            //    }
+            //    else
+            //    {
+            //        _parent.Add(value, current);
+            //        _segmentContext.Value = value;
+            //    }
+            //}
+            get => LocalSegmentContex;
             set
             {
-                var current = _segmentContext.Value;
+                var current = LocalSegmentContex;
                 if (value == null)
                 {
                     if (_parent.TryGetValue(current, out var parent))
-                        _segmentContext.Value = parent;
+                        LocalSegmentContex = parent;
                 }
                 else
                 {
                     _parent.Add(value, current);
-                    _segmentContext.Value = value;
+                    LocalSegmentContex = value;
                 }
             }
+        }
+
+        private SegmentContext LocalSegmentContex
+        {
+            get => (SegmentContext)CallContextUtils.GetData("LocalSegmentContex");
+            set => CallContextUtils.SetData("LocalSegmentContex", value);
         }
     }
 }

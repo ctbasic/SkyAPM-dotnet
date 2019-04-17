@@ -16,10 +16,10 @@
  *
  */
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace SkyApm.Utilities.DependencyInjection
 {
+#if NETSTANDARD
+using Microsoft.Extensions.DependencyInjection;
     public class SkyApmExtensions
     {
         public IServiceCollection Services { get; }
@@ -29,4 +29,15 @@ namespace SkyApm.Utilities.DependencyInjection
             Services = services;
         }
     }
+#else
+    public class SkyApmExtensions
+    {
+        public IServiceCollectionContainer Services { get; }
+
+        public SkyApmExtensions(IServiceCollectionContainer services)
+        {
+            Services = services;
+        }
+    }
+#endif
 }
