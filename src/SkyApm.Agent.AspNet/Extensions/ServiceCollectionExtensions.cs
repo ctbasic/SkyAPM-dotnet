@@ -130,6 +130,7 @@ namespace SkyApm.Agent.AspNet.Extensions
             services.AddSingleton<IExecutionService, ConnectService>();
 
             services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
+			services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
             return services;
         }
     }
