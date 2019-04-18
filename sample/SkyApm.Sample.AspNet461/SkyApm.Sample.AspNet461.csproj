@@ -224,7 +224,7 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\SkyApm.Agent.AspNet\SkyApm.Agent.AspNet.csproj">
+    <ProjectReference Include="..\..\src\SkyApm.Agent.AspNet\SkyApm.Agent.AspNet.csproj">
       <Project>{3a454a8a-a1b7-4c6d-be08-52d956f95cc1}</Project>
       <Name>SkyApm.Agent.AspNet</Name>
     </ProjectReference>
