@@ -16,31 +16,17 @@
  *
  */
 
-namespace SkyApm.Common
+using Microsoft.Extensions.Hosting;
+
+namespace SkyApm.Agent.NetCoreHost
 {
-    public static class Tags
+    internal class HostingEnvironmentProvider : IEnvironmentProvider
     {
-        public static readonly string URL = "url";
-        
-        public static readonly string PATH = "path";
+        public string EnvironmentName { get; }
 
-
-        public static readonly string HTTP_METHOD = "http.method";
-
-        public static readonly string STATUS_CODE = "status_code";
-
-        public static readonly string DB_TYPE = "db.type";
-
-        public static readonly string DB_INSTANCE = "db.instance";
-        
-        public static readonly string DB_STATEMENT = "db.statement";
-        
-        public static readonly string DB_BIND_VARIABLES = "db.bind_vars";
-
-        public static readonly string MQ_TOPIC = "mq.topic";
-
-        public static readonly string RPC_METHOD = "prc.method";
-
-        public static readonly string RPC_TYPE = "prc.type";
+        public HostingEnvironmentProvider(IHostingEnvironment hostingEnvironment)
+        {
+            EnvironmentName = hostingEnvironment.EnvironmentName;
+        }
     }
 }

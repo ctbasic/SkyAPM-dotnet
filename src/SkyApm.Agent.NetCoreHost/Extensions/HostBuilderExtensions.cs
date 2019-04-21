@@ -16,31 +16,15 @@
  *
  */
 
-namespace SkyApm.Common
+using Microsoft.Extensions.Hosting;
+using SkyApm.Thrift;
+using SkyApm.Utilities.DependencyInjection;
+
+namespace SkyApm.Agent.NetCoreHost.Extensions
 {
-    public static class Tags
+    public static class HostBuilderExtensions
     {
-        public static readonly string URL = "url";
-        
-        public static readonly string PATH = "path";
-
-
-        public static readonly string HTTP_METHOD = "http.method";
-
-        public static readonly string STATUS_CODE = "status_code";
-
-        public static readonly string DB_TYPE = "db.type";
-
-        public static readonly string DB_INSTANCE = "db.instance";
-        
-        public static readonly string DB_STATEMENT = "db.statement";
-        
-        public static readonly string DB_BIND_VARIABLES = "db.bind_vars";
-
-        public static readonly string MQ_TOPIC = "mq.topic";
-
-        public static readonly string RPC_METHOD = "prc.method";
-
-        public static readonly string RPC_TYPE = "prc.type";
+        public static IHostBuilder AddSkyAPM(this IHostBuilder builder) =>
+            builder.ConfigureServices((context, services) => services.AddSkyAPMCore().AddSkyApmExtensions().AddThriftTrace());
     }
 }

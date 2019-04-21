@@ -15,9 +15,6 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
   </PropertyGroup>
-    <PropertyGroup Condition=" '$(TargetFramework)' == 'net45'">
-      <DefineConstants>$(DefineConstants);NET_FX45</DefineConstants>
-    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
         <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />

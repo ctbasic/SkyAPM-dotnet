@@ -25,26 +25,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
-using ctzipkin.common;
-using ctzipkin.extensions;
+using CommonServiceLocator;
+using SkyApm.Agent.Thrift;
+using SkyApm.Agent.Thrift.ProtocolExt;
+using SkyApm.Common;
+using SkyApm.Tracing;
+using SkyApm.Tracing.Segments;
 using Thrift.Transport;
-using Thrift.ZipKin.ProtocolExt;
-using zipkin4net;
-using zipkin4net.Propagation;
-using zipkin4net.Tracers.Zipkin;
 
 #endregion
 
 namespace Thrift.Protocol
 {
-    public class TZipKinServerProtocol : TProtocol
+    public class TCtSkyApmServerProtocol : TProtocol
     {
         protected const uint VERSION_MASK = 0xffff0000;
         protected const uint VERSION_1 = 0x80010000;
 
         protected bool strictRead_;
         protected bool strictWrite_ = true;
+
+        private static SkyApm.Logging.ILogger logger = ServiceLocator.Current.GetInstance<SkyApm.Logging.ILoggerFactory>().CreateLogger(typeof(TCtSkyApmServerProtocol));
+
 
         #region BinaryProtocol Factory
 
@@ -69,18 +73,18 @@ namespace Thrift.Protocol
 
             public TProtocol GetProtocol(TTransport trans)
             {
-                return new TZipKinServerProtocol(trans, strictRead_, strictWrite_);
+                return new TCtSkyApmServerProtocol(trans, strictRead_, strictWrite_);
             }
         }
 
         #endregion
 
-        public TZipKinServerProtocol(TTransport trans)
+        public TCtSkyApmServerProtocol(TTransport trans)
             : this(trans, false, true)
         {
         }
 
-        public TZipKinServerProtocol(TTransport trans, bool strictRead, bool strictWrite)
+        public TCtSkyApmServerProtocol(TTransport trans, bool strictRead, bool strictWrite)
             : base(trans)
         {
             strictRead_ = strictRead;
@@ -114,11 +118,19 @@ namespace Thrift.Protocol
         {
             try
             {
-                Trace.Current.Record(Annotations.ServerSend());
+                ITracingContext tracingContext= ServiceLocator.Current.GetInstance<ITracingContext>();
+                IEntrySegmentContextAccessor contextAccessor= ServiceLocator.Current.GetInstance<IEntrySegmentContextAccessor>();
+
+                tracingContext.Release(contextAccessor.Context);
+                if (contextAccessor.Context == null)
+                {
+                    logger.Warning("ThriftServerSend Context is null");
+                }
+
             }
             catch (Exception e)
             {
-                ZipkinManager.ZipkinLogger.LogError($"ThriftServerSend error :{e.StackTrace}");
+                logger.Error("ThriftServerSend error", e);
             }
         }
 
@@ -291,35 +303,29 @@ namespace Thrift.Protocol
         /// <summary>
         ///     服务端受理
         /// </summary>
-        /// <param name="zipKinHeader"></param>
+        /// <param name="headers"></param>
         /// <param name="methodName"></param>
-        private void ThriftServerReceive(Dictionary<string, string> zipKinHeader, string methodName)
+        private void ThriftServerReceive(ThriftHeaders headers, string methodName)
         {
             try
             {
-                var extractor = Propagations.B3String.Extractor<Dictionary<string, string>>((carrier, key) =>
-                {
-                    if (carrier.ContainsKey(key))
-                    {
-                        return carrier[key];
-                    }
-                    return string.Empty;
-                });
-                var traceContext = extractor.Extract(zipKinHeader);
-                var trace = traceContext == null ? Trace.Create() : Trace.CreateFromId(traceContext);
-                Trace.Current = trace;
+                var tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
+                var segmentContext = tracingContext.CreateEntrySegmentContext(methodName,
+                    new ThriftICarrierHeaderCollection(headers));
+                segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
+                segmentContext.Span.Component = Components.ASPNETCORE;
+                segmentContext.Span.Peer = new StringOrIntValue("192.168.1.1:11");
+                segmentContext.Span.AddTag(Tags.RPC_METHOD, methodName);
+                segmentContext.Span.AddTag(Tags.RPC_TYPE, "thrift");
+                segmentContext.Span.AddLog(
+                    LogEvent.Event("Thrift Hosting BeginRequest"),
+                    LogEvent.Message(
+                        $"Request starting thrift {methodName}"));
 
-                Trace.Current.Record(Annotations.ServerRecv());
-                Trace.Current.Record(Annotations.ServiceName(ZipkinManager.ServiceName));
-                Trace.Current.Record(Annotations.Rpc(ProtocolUtils.RPC_NAME));
-
-                Trace.Current.Record(Annotations.Tag(AnnotationTagConsts.RPC_METHOD_NAME, methodName));
-                //string clienttime = zipKinHeader.ContainsKey("clienttime") ? zipKinHeader["clienttime"] : "error";
-                //Trace.Current.Record(Annotations.Tag("clienttime", clienttime));
             }
             catch (Exception e)
             {
-                ZipkinManager.ZipkinLogger.LogError($"ThriftServerReceive error :{e.StackTrace}");
+                logger.Error("ThriftServerReceive error", e);
             }
         }
 

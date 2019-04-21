@@ -30,16 +30,10 @@ using SkyApm.Transport.Grpc;
 using SkyApm.Transport.Grpc.V5;
 using SkyApm.Transport.Grpc.V6;
 using SkyApm.Utilities.Configuration;
-using SkyApm.Utilities.Logging;
-using SkyApm.AspNetCore.Diagnostics;
-using SkyApm.Diagnostics.EntityFrameworkCore;
-using SkyApm.Diagnostics.HttpClient;
-using SkyApm.Diagnostics.SqlClient;
 using SkyApm.Utilities.DependencyInjection;
-using SkyApm.Diagnostics.SmartSql;
-using SkyApm.Thrift;
+using SkyApm.Utilities.Logging;
 
-namespace SkyApm.Agent.AspNetCore
+namespace SkyApm.Agent.NetCoreHost.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
@@ -49,7 +43,7 @@ namespace SkyApm.Agent.AspNetCore
             {
                 throw new ArgumentNullException(nameof(services));
             }
-            
+
             services.AddSingleton<ISegmentDispatcher, AsyncQueueSegmentDispatcher>();
             services.AddSingleton<IExecutionService, RegisterService>();
             services.AddSingleton<IExecutionService, PingService>();
@@ -62,10 +56,8 @@ namespace SkyApm.Agent.AspNetCore
             services.AddSingleton<IConfigurationFactory, ConfigurationFactory>();
             services.AddSingleton<IHostedService, InstrumentationHostedService>();
             services.AddSingleton<IEnvironmentProvider, HostingEnvironmentProvider>();
-            services.AddSingleton<IExecutionService, CLRStatsService>();
             services.AddTracing().AddSampling().AddGrpcTransport().AddLogging();
-            services.AddSkyApmExtensions().AddAspNetCoreHosting().AddHttpClient().AddSqlClient()
-                .AddEntityFrameworkCore(c => c.AddPomeloMysql().AddNpgsql().AddSqlite()).AddThriftTrace();
+            services.AddSkyApmExtensions();
             return services;
         }
 
@@ -104,7 +96,6 @@ namespace SkyApm.Agent.AspNetCore
             services.AddSingleton<IPingCaller, PingCaller>();
             services.AddSingleton<IServiceRegister, ServiceRegister>();
             services.AddSingleton<IExecutionService, ConnectService>();
-            services.AddSingleton<ICLRStatsReporter, CLRStatsReporter>();
             return services;
         }
 

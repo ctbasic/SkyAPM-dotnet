@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-#if !NET_FX45
+#if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
 using Nito.AsyncEx;
 #endif
@@ -20,23 +20,25 @@ namespace SkyApm.Agent.AspNet
 
         public Task StartAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-#if NET_FX45
-            Task.Run(() => { instrumentStartup.StartAsync(cancellationToken); });
+#if NETSTANDARD
+            AsyncContext.Run(() => instrumentStartup.StartAsync());
+            
 #else
-                AsyncContext.Run(() => instrumentStartup.StartAsync());
+            Task.Run(() => { instrumentStartup.StartAsync(cancellationToken); });
 #endif
             return CustomTaskUtils.ReturnCompletedTask();
         }
 
         public Task StopAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-#if NET_FX45
+#if NETSTANDARD
+            AsyncContext.Run(() => instrumentStartup.StopAsync());
+
+#else
             Task.Run(() =>
             {
                 instrumentStartup.StopAsync(cancellationToken);
             });
-#else
-                AsyncContext.Run(() => instrumentStartup.StopAsync());
 #endif
             return Task.Delay(TimeSpan.FromSeconds(2));
         }

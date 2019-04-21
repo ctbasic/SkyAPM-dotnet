@@ -21,11 +21,9 @@ using System.Web;
 using CommonServiceLocator;
 using SkyApm.Agent.AspNet;
 using SkyApm.Agent.AspNet.Extensions;
-#if !NET_FX45
+#if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
-#endif
-
-#if NET_FX45
+#else
 using SkyApm.Utilities.DependencyInjectionEx.Dependency;
 #endif
 
@@ -37,11 +35,13 @@ namespace SkyApm.Agent.AspNet
     {
         public static void Create()
         {
-#if NET_FX45
-            var serviceProvider = new AutofacServiceCollection().AddSkyAPMCore().BuildServiceProvider();
-            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
-#else
+#if NETSTANDARD
             var serviceProvider = new ServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+
+
+#else
+            var serviceProvider = new AutofacServiceCollection().AddSkyAPMCore().BuildServiceProvider();
             var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
 #endif
             ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);

@@ -32,9 +32,62 @@ using SkyApm.Utilities.Logging;
 
 namespace SkyApm.Agent.AspNet.Extensions
 {
-#if NET_FX45
+#if NETSTANDARD
     
+        using Microsoft.Extensions.DependencyInjection;
+    internal static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddSkyAPMCore(this IServiceCollection services)
+        {
+            services.AddSingleton<ISegmentDispatcher, AsyncQueueSegmentDispatcher>();
+            services.AddSingleton<IExecutionService, RegisterService>();
+            services.AddSingleton<IExecutionService, PingService>();
+            services.AddSingleton<IExecutionService, ServiceDiscoveryV5Service>();
+            services.AddSingleton<IExecutionService, SegmentReportService>();
+            services.AddSingleton<IInstrumentStartup, InstrumentStartup>();
+            services.AddSingleton<IRuntimeEnvironment>(RuntimeEnvironment.Instance);
+            services.AddSingleton<TracingDiagnosticProcessorObserver>();
+            services.AddSingleton<IConfigAccessor, ConfigAccessor>();
+            services.AddSingleton<IEnvironmentProvider, HostingEnvironmentProvider>();
+            services.AddSingleton<InstrumentRequestCallback>();
+            services.AddSingleton<IConfigurationFactory, ConfigurationFactory>();
+
+            services.AddSingleton<ITracingContext, Tracing.TracingContext>();
+            services.AddSingleton<ICarrierPropagator, CarrierPropagator>();
+            services.AddSingleton<ICarrierFormatter, Sw3CarrierFormatter>();
+            services.AddSingleton<ICarrierFormatter, Sw6CarrierFormatter>();
+            services.AddSingleton<ISegmentContextFactory, SegmentContextFactory>();
+            services.AddSingleton<IEntrySegmentContextAccessor, EntrySegmentContextAccessor>();
+            services.AddSingleton<ILocalSegmentContextAccessor, LocalSegmentContextAccessor>();
+            services.AddSingleton<IExitSegmentContextAccessor, ExitSegmentContextAccessor>();
+            services.AddSingleton<ISamplerChainBuilder, SamplerChainBuilder>();
+            services.AddSingleton<IUniqueIdGenerator, UniqueIdGenerator>();
+            services.AddSingleton<IUniqueIdParser, UniqueIdParser>();
+            services.AddSingleton<ISegmentContextMapper, SegmentContextMapper>();
+            services.AddSingleton<IBase64Formatter, Base64Formatter>();
+
+            services.AddSingleton<SimpleCountSamplingInterceptor>();
+            services.AddSingleton<ISamplingInterceptor>(p => p.GetService<SimpleCountSamplingInterceptor>());
+            services.AddSingleton<IExecutionService>(p => p.GetService<SimpleCountSamplingInterceptor>());
+            services.AddSingleton<ISamplingInterceptor, RandomSamplingInterceptor>();
+
+            services.AddSingleton<ISkyApmClientV5, SkyApmClientV5>();
+            services.AddSingleton<ISegmentReporter, SegmentReporter>();
+            services.AddSingleton<ConnectionManager>();
+            services.AddSingleton<IPingCaller, PingCaller>();
+            services.AddSingleton<IServiceRegister, ServiceRegister>();
+            services.AddSingleton<IExecutionService, ConnectService>();
+
+            services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
+			services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
+            return services;
+        }
+    }
+
+#else
+
     using Autofac;
+    using SkyApm.Thrift;
     using SkyApm.Utilities.DependencyInjection;
     using SkyApm.Utilities.DependencyInjectionEx.Dependency;
     internal static class ServiceCollectionExtensions
@@ -81,56 +134,7 @@ namespace SkyApm.Agent.AspNet.Extensions
 
             services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
             services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
-            return services;
-        }
-    }
-#else
-    using Microsoft.Extensions.DependencyInjection;
-    internal static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddSkyAPMCore(this IServiceCollection services)
-        {
-            services.AddSingleton<ISegmentDispatcher, AsyncQueueSegmentDispatcher>();
-            services.AddSingleton<IExecutionService, RegisterService>();
-            services.AddSingleton<IExecutionService, PingService>();
-            services.AddSingleton<IExecutionService, ServiceDiscoveryV5Service>();
-            services.AddSingleton<IExecutionService, SegmentReportService>();
-            services.AddSingleton<IInstrumentStartup, InstrumentStartup>();
-            services.AddSingleton<IRuntimeEnvironment>(RuntimeEnvironment.Instance);
-            services.AddSingleton<TracingDiagnosticProcessorObserver>();
-            services.AddSingleton<IConfigAccessor, ConfigAccessor>();
-            services.AddSingleton<IEnvironmentProvider, HostingEnvironmentProvider>();
-            services.AddSingleton<InstrumentRequestCallback>();
-            services.AddSingleton<IConfigurationFactory, ConfigurationFactory>();
-
-            services.AddSingleton<ITracingContext, Tracing.TracingContext>();
-            services.AddSingleton<ICarrierPropagator, CarrierPropagator>();
-            services.AddSingleton<ICarrierFormatter, Sw3CarrierFormatter>();
-            services.AddSingleton<ICarrierFormatter, Sw6CarrierFormatter>();
-            services.AddSingleton<ISegmentContextFactory, SegmentContextFactory>();
-            services.AddSingleton<IEntrySegmentContextAccessor, EntrySegmentContextAccessor>();
-            services.AddSingleton<ILocalSegmentContextAccessor, LocalSegmentContextAccessor>();
-            services.AddSingleton<IExitSegmentContextAccessor, ExitSegmentContextAccessor>();
-            services.AddSingleton<ISamplerChainBuilder, SamplerChainBuilder>();
-            services.AddSingleton<IUniqueIdGenerator, UniqueIdGenerator>();
-            services.AddSingleton<IUniqueIdParser, UniqueIdParser>();
-            services.AddSingleton<ISegmentContextMapper, SegmentContextMapper>();
-            services.AddSingleton<IBase64Formatter, Base64Formatter>();
-
-            services.AddSingleton<SimpleCountSamplingInterceptor>();
-            services.AddSingleton<ISamplingInterceptor>(p => p.GetService<SimpleCountSamplingInterceptor>());
-            services.AddSingleton<IExecutionService>(p => p.GetService<SimpleCountSamplingInterceptor>());
-            services.AddSingleton<ISamplingInterceptor, RandomSamplingInterceptor>();
-
-            services.AddSingleton<ISkyApmClientV5, SkyApmClientV5>();
-            services.AddSingleton<ISegmentReporter, SegmentReporter>();
-            services.AddSingleton<ConnectionManager>();
-            services.AddSingleton<IPingCaller, PingCaller>();
-            services.AddSingleton<IServiceRegister, ServiceRegister>();
-            services.AddSingleton<IExecutionService, ConnectService>();
-
-            services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
-			services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
+            services.AddSkyApmExtensions().AddThriftTrace();
             return services;
         }
     }

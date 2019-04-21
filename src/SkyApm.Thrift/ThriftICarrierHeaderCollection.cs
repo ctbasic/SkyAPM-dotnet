@@ -16,31 +16,35 @@
  *
  */
 
-namespace SkyApm.Common
+
+using System.Collections;
+using System.Collections.Generic;
+using SkyApm.Tracing;
+
+namespace SkyApm.Agent.Thrift
 {
-    public static class Tags
+    internal class ThriftICarrierHeaderCollection : ICarrierHeaderCollection
     {
-        public static readonly string URL = "url";
-        
-        public static readonly string PATH = "path";
+        private ThriftHeaders thriftHeaders;
 
+        public ThriftICarrierHeaderCollection(ThriftHeaders headers)
+        {
+            thriftHeaders = headers;
+        }
 
-        public static readonly string HTTP_METHOD = "http.method";
+        public void Add(string key, string value)
+        {
+            thriftHeaders.Add(key, value);
+        }
 
-        public static readonly string STATUS_CODE = "status_code";
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+        {
+            return thriftHeaders.GetEnumerator();
+        }
 
-        public static readonly string DB_TYPE = "db.type";
-
-        public static readonly string DB_INSTANCE = "db.instance";
-        
-        public static readonly string DB_STATEMENT = "db.statement";
-        
-        public static readonly string DB_BIND_VARIABLES = "db.bind_vars";
-
-        public static readonly string MQ_TOPIC = "mq.topic";
-
-        public static readonly string RPC_METHOD = "prc.method";
-
-        public static readonly string RPC_TYPE = "prc.type";
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

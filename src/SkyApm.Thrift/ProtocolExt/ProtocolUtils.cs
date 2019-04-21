@@ -1,50 +1,56 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text;
+using System.Linq;
 using Thrift.Protocol;
 
-namespace Thrift.ZipKin.ProtocolExt
+namespace SkyApm.Agent.Thrift.ProtocolExt
 {
     internal static class ProtocolUtils
     {
         /// <summary>
-        /// 头信息分隔符
+        /// 头信息不同键值对信息分隔符
         /// </summary>
-        private const char HEADER_SEPARATOR = '|';
+        private const char HEADER_SEPARATOR = ';';
 
         /// <summary>
         /// 头信息键值对分隔符
         /// </summary>
-        private const char HEADER_KEY_VALUE_SEPARATOR = '=';
+        private const char HEADER_KEY_VALUE_SEPARATOR = '|';
+
+        /// <summary>
+        /// 头信息与rpc方法名分隔符
+        /// </summary>
+        private const char HEADER_RPCMETHOD_SEPARATOR = '*';
 
         /// <summary>
         /// RPC名称
         /// </summary>
         public const string RPC_NAME = "thrift.rpc";
 
-        public static Dictionary<string, string> GetBinaryProtocolHeader(string sourceMsgName, out string targetMsgName)
+
+        public static ThriftHeaders GetBinaryProtocolHeader(string sourceMsgName, out string targetMsgName)
         {
             try
             {
+                ThriftHeaders thriftHeaders = new ThriftHeaders();
                 targetMsgName = sourceMsgName;
                 // 判断是否有分割标识
-                if (!sourceMsgName.Contains(TMultiplexedProtocol.SEPARATOR))
+                if (!sourceMsgName.Contains(HEADER_RPCMETHOD_SEPARATOR))
                 {
-                    return new Dictionary<string, string>();
+                    return thriftHeaders;
                 }
 
                 // 提取Header文本
-                int index = targetMsgName.LastIndexOf(TMultiplexedProtocol.SEPARATOR, StringComparison.Ordinal);
+                int index = targetMsgName.LastIndexOf(HEADER_RPCMETHOD_SEPARATOR.ToString(), StringComparison.Ordinal);
                 string headersValue = targetMsgName.Substring(0, index);
                 //将message.name还原，继续走thrift标准处理流程
-                int len = headersValue.Length + TMultiplexedProtocol.SEPARATOR.Length;
+                int len = headersValue.Length + HEADER_RPCMETHOD_SEPARATOR.ToString().Length;
                 targetMsgName = targetMsgName.Substring(len);
 
                 string[] headers = headersValue.Split(new[] { HEADER_SEPARATOR });
-                Dictionary<string, string> headerDic = new Dictionary<string, string>();
                 foreach (var keyValueStr in headers)
                 {
+                    //string[] keyValue = keyValueStr.Split(HEADER_KEY_VALUE_SEPARATOR);
                     string[] keyValue = keyValueStr.Split(HEADER_KEY_VALUE_SEPARATOR);
                     string key = "";
                     string value = "";
@@ -53,13 +59,13 @@ namespace Thrift.ZipKin.ProtocolExt
                         key = keyValue[0];
                         value = keyValue[1];
                     }
-                    if (!string.IsNullOrWhiteSpace(key) && !headerDic.ContainsKey(key))
+                    if (!string.IsNullOrWhiteSpace(key) && !thriftHeaders.Contains(key))
                     {
-                        headerDic.Add(key, value);
+                        thriftHeaders.Add(key, value);
                     }
                 }
 
-                return headerDic;
+                return thriftHeaders;
             }
             catch (Exception e)
             {
@@ -67,24 +73,29 @@ namespace Thrift.ZipKin.ProtocolExt
             }
         }
 
+
         /// <summary>
         /// 包装头信息
         /// </summary>
-        /// <param name="headerDic"></param>
+        /// <param name="headers"></param>
         /// <returns></returns>
-        public static string WrapBinaryProtocolHeader(Dictionary<string, string> headerDic)
+        public static string WrapBinaryProtocolHeader(ThriftHeaders headers)
         {
-            if (headerDic == null || headerDic.Count <= 0)
+            if (headers == null || headers.ToList().Count <= 0)
             {
                 return string.Empty;
             }
             string headerStr = string.Empty;
-            foreach (var keyValue in headerDic)
+            foreach (var keyValue in headers.ToList())
             {
-                headerStr += $"{keyValue.Key}{HEADER_KEY_VALUE_SEPARATOR}{keyValue.Value}{HEADER_SEPARATOR}";
+                //headerStr += $"{keyValue.Key}{HEADER_KEY_VALUE_SEPARATOR}{keyValue.Value}{HEADER_SEPARATOR}";
+
+                headerStr += $"{keyValue.Key}{HEADER_KEY_VALUE_SEPARATOR }{keyValue.Value}{HEADER_SEPARATOR}";
             }
             return headerStr.TrimEnd(HEADER_SEPARATOR);
         }
+
+
 
         /// <summary>
         /// 包装消息名称
@@ -99,7 +110,7 @@ namespace Thrift.ZipKin.ProtocolExt
                 return sourceMsgName;
             }
 
-            return header + TMultiplexedProtocol.SEPARATOR + sourceMsgName;
+            return header + HEADER_RPCMETHOD_SEPARATOR + sourceMsgName;
         }
     }
 }

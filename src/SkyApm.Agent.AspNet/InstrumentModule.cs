@@ -19,12 +19,10 @@
 using System;
 using CommonServiceLocator;
 using System.Web;
-#if !NET_FX45
+#if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
 using Nito.AsyncEx;
-#endif
-
-#if NET_FX45
+#else
 using System.Threading.Tasks;
 #endif
 using SkyApm.Agent.AspNet.Extensions;

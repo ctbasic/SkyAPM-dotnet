@@ -1,4 +1,4 @@
-﻿#if NET_FX
+﻿#if !NETSTANDARD
 namespace SkyApm.Utilities.DependencyInjection
 {
     using System;

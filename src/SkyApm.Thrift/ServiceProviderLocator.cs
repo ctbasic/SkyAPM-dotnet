@@ -19,9 +19,8 @@
 using CommonServiceLocator;
 using System;
 using System.Collections.Generic;
-using SkyApm.Utilities.DependencyInjection;
 
-namespace SkyApm.Agent.AspNet
+namespace SkyApm.Thrift
 {
 #if NETSTANDARD
     using Microsoft.Extensions.DependencyInjection;
@@ -40,16 +39,13 @@ namespace SkyApm.Agent.AspNet
 
         public object GetInstance(Type serviceType, string key) => GetInstance(serviceType);
 
-        public TService GetInstance<TService>() => (TService)GetInstance(typeof(TService));
+        public IEnumerable<object> GetAllInstances(Type serviceType) => _serviceProvider.GetServices(serviceType);
 
-        public TService GetInstance<TService>(string key) => (TService)GetInstance(typeof(TService));
+        public TService GetInstance<TService>() => (TService) GetInstance(typeof(TService));
 
-        public IEnumerable<TService> GetAllInstances<TService>() => _serviceProvider.GetServices<TService>(); 
+        public TService GetInstance<TService>(string key) => (TService) GetInstance(typeof(TService));
 
-        public IEnumerable<object> GetAllInstances(Type serviceType)
-        {
-            return _serviceProvider.GetServices(serviceType);
-        }
+        public IEnumerable<TService> GetAllInstances<TService>() => _serviceProvider.GetServices<TService>();
     }
 #else
     internal class ServiceProviderLocator : IServiceLocator
@@ -71,10 +67,10 @@ namespace SkyApm.Agent.AspNet
 
         public TService GetInstance<TService>(string key) => (TService)GetInstance(typeof(TService));
 
-        public IEnumerable<TService> GetAllInstances<TService>()=> (IEnumerable<TService>)_serviceProvider.GetService(typeof(IEnumerable<TService>));
+        public IEnumerable<TService> GetAllInstances<TService>() => (IEnumerable<TService>)_serviceProvider.GetService(typeof(IEnumerable<TService>));
 
-
-        public IEnumerable<object> GetAllInstances(Type serviceType) {
+        public IEnumerable<object> GetAllInstances(Type serviceType)
+        {
             Type enumerableOfType = typeof(IEnumerable<>).MakeGenericType(serviceType);
             return (IEnumerable<object>)_serviceProvider.GetService(enumerableOfType);
         }

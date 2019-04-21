@@ -1,4 +1,4 @@
-﻿#if NET_FX
+﻿#if !NETSTANDARD
 
 using System;
 using Autofac;
