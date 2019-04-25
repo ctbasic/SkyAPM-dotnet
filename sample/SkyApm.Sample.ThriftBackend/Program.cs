@@ -13,6 +13,14 @@ using ThriftServer;
 
 namespace SkyApm.Sample.ThriftBackend
 {
+    public static class AA
+    {
+        //public static IHost Run(this IHost host)
+        //{
+        //    ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
+        //}
+    } 
+
     class Program
     {
         static void Main(string[] args)
@@ -32,8 +40,6 @@ namespace SkyApm.Sample.ThriftBackend
                     #endregion
 
                     services.AddSingleton<IHostedService, ThriftHostService>();
-
-                    IServiceProvider serviceProvider = services.BuildServiceProvider();
                 })
                 .AddSkyAPM()
                 .Build().Run();

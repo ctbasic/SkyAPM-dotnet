@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05BF0D4E-C824-4EC8-8330-36C1FC49910E}"
 EndProject
@@ -93,6 +93,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyApm.Abstractions", "src\SkyApm.Abstractions\SkyApm.Abstractions.csproj", "{6E3CD550-1B01-44A9-8EE5-B651681BE8E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.AspNet461", "sample\SkyApm.Sample.AspNet461\SkyApm.Sample.AspNet461.csproj", "{CB9D5FC4-D626-4F82-AD16-F042A5FA63E6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{02946AD8-629D-441C-B4A5-47BB9FFAD21F} = {02946AD8-629D-441C-B4A5-47BB9FFAD21F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.AspNet472", "sample\SkyApm.Sample.AspNet472\SkyApm.Sample.AspNet472.csproj", "{A00AB5A0-7674-422B-982D-6408A1E69DB1}"
 EndProject
@@ -103,6 +106,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyApm.Agent.NetCoreHost", "src\SkyApm.Agent.NetCoreHost\SkyApm.Agent.NetCoreHost.csproj", "{B075AD12-D6F4-4413-8FB1-9FD90FD750FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.AspNet45", "sample\SkyApm.Sample.AspNet45\SkyApm.Sample.AspNet45.csproj", "{02946AD8-629D-441C-B4A5-47BB9FFAD21F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyApm.Soap", "src\SkyApm.Soap\SkyApm.Soap.csproj", "{56AE2797-4E20-444F-8632-7E3F5DA088D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -238,6 +243,10 @@ Global
 		{02946AD8-629D-441C-B4A5-47BB9FFAD21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02946AD8-629D-441C-B4A5-47BB9FFAD21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02946AD8-629D-441C-B4A5-47BB9FFAD21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -283,6 +292,7 @@ Global
 		{5094F871-B04C-4BBD-B3C4-DE02864FD666} = {88AEFE60-F743-4AF3-8F55-B4B7B8079D95}
 		{B075AD12-D6F4-4413-8FB1-9FD90FD750FB} = {EF6194B2-9ACB-49B9-8049-DD6AFAEB0399}
 		{02946AD8-629D-441C-B4A5-47BB9FFAD21F} = {844CEACD-4C85-4B15-9E2B-892B01FDA4BB}
+		{56AE2797-4E20-444F-8632-7E3F5DA088D6} = {88AEFE60-F743-4AF3-8F55-B4B7B8079D95}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94C0DA2C-CCCB-4314-93A2-9809B5DD0583}

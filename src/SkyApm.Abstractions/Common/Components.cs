@@ -41,5 +41,7 @@ namespace SkyApm.Common
         public static readonly StringOrIntValue SMART_SQL = new StringOrIntValue("SmartSql");
 
         public static readonly StringOrIntValue THRIFTCLIENT = new StringOrIntValue("ThriftClient");
+
+        public static readonly StringOrIntValue SOAPCLIENT = new StringOrIntValue("SOAPClient");
     }
 }

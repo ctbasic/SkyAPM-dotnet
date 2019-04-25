@@ -48,7 +48,8 @@ namespace Thrift.Protocol
         protected bool strictWrite_ = true;
 
         private static SkyApm.Logging.ILogger logger = ServiceLocator.Current.GetInstance<SkyApm.Logging.ILoggerFactory>().CreateLogger(typeof(TCtSkyApmServerProtocol));
-
+        private readonly ITracingContext tracingContext;
+        private readonly IEntrySegmentContextAccessor segmentContextAccessor;
 
         #region BinaryProtocol Factory
 
@@ -89,6 +90,9 @@ namespace Thrift.Protocol
         {
             strictRead_ = strictRead;
             strictWrite_ = strictWrite;
+
+            tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
+            segmentContextAccessor = ServiceLocator.Current.GetInstance<IEntrySegmentContextAccessor>();
         }
 
         #region Write Methods
@@ -118,15 +122,12 @@ namespace Thrift.Protocol
         {
             try
             {
-                ITracingContext tracingContext= ServiceLocator.Current.GetInstance<ITracingContext>();
-                IEntrySegmentContextAccessor contextAccessor= ServiceLocator.Current.GetInstance<IEntrySegmentContextAccessor>();
-
-                tracingContext.Release(contextAccessor.Context);
-                if (contextAccessor.Context == null)
+                if (segmentContextAccessor.Context == null)
                 {
                     logger.Warning("ThriftServerSend Context is null");
                 }
 
+                tracingContext.Release(segmentContextAccessor.Context);
             }
             catch (Exception e)
             {
@@ -309,9 +310,7 @@ namespace Thrift.Protocol
         {
             try
             {
-                var tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
-                var segmentContext = tracingContext.CreateEntrySegmentContext(methodName,
-                    new ThriftICarrierHeaderCollection(headers));
+                var segmentContext = tracingContext.CreateEntrySegmentContext(methodName, new ThriftICarrierHeaderCollection(headers));
                 segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
                 segmentContext.Span.Component = Components.ASPNETCORE;
                 segmentContext.Span.Peer = new StringOrIntValue("192.168.1.1:11");

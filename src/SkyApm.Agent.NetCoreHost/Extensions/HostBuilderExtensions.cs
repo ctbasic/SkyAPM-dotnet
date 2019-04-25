@@ -17,7 +17,6 @@
  */
 
 using Microsoft.Extensions.Hosting;
-using SkyApm.Thrift;
 using SkyApm.Utilities.DependencyInjection;
 
 namespace SkyApm.Agent.NetCoreHost.Extensions
@@ -25,6 +24,6 @@ namespace SkyApm.Agent.NetCoreHost.Extensions
     public static class HostBuilderExtensions
     {
         public static IHostBuilder AddSkyAPM(this IHostBuilder builder) =>
-            builder.ConfigureServices((context, services) => services.AddSkyAPMCore().AddSkyApmExtensions().AddThriftTrace());
+            builder.ConfigureServices((context, services) => services.AddSkyAPMCore().AddSkyApmExtensions());
     }
 }

@@ -17,7 +17,9 @@
  */
 
 using System;
+using System.IO;
 using System.Web;
+using System.Xml;
 using SkyApm.Common;
 using SkyApm.Config;
 using SkyApm.Tracing;
@@ -43,16 +45,27 @@ namespace SkyApm.Agent.AspNet
 
         public void ApplicationOnBeginRequest(object sender, EventArgs e)
         {
-            var httpApplication = sender as HttpApplication;
-            var httpContext = httpApplication.Context;
+            HttpApplication httpApplication = sender as HttpApplication;
+            if (httpApplication == null)
+            {
+                return;
+            }
+            HttpContext httpContext = httpApplication.Context;
 
             if (httpContext.Request.HttpMethod == "OPTIONS")
             {
                 //asp.net Exclude OPTIONS request
                 return;
             }
-            var context = _tracingContext.CreateEntrySegmentContext(httpContext.Request.Path,
-                new HttpRequestCarrierHeaderCollection(httpContext.Request));
+            //using (Stream inputStream= httpContext.Request.GetBufferedInputStream())
+            //{
+            //    TextReader reader = new StreamReader(inputStream);
+            //    string inputContet = reader.ReadToEnd();
+            //}
+
+
+                var context = _tracingContext.CreateEntrySegmentContext(httpContext.Request.Path,
+                    new HttpRequestCarrierHeaderCollection(httpContext.Request));
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Peer = new StringOrIntValue(httpContext.Request.UserHostAddress);
             context.Span.Component = Common.Components.ASPNET;

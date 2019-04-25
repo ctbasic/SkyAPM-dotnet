@@ -1,6 +1,6 @@
 {
   "SkyWalking": {
-    "ServiceName": "SkyApm.Sample.AspNet461-2",
+    "ServiceName": "soapclient",
     "Namespace": "",
     "HeaderVersions": [
       "sw6"

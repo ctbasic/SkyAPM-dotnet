@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SkyApm.Soap.netcore;
 
 namespace SkyApm.Sample.Frontend.Controllers
 {
@@ -12,6 +13,9 @@ namespace SkyApm.Sample.Frontend.Controllers
         [HttpGet]
         public async Task<IEnumerable<string>> Get()
         {
+            var  instance= WebServiceFactory.GetInstance<skyapmsoap.SkyApmSoapServiceSoapClient>("http://localhost:57055/skyapmsoapservice.asmx");
+            var a= instance.HelloWorldAsync().GetAwaiter().GetResult();
+
             await new HttpClient().GetAsync("http://localhost:5002/api/values");
             return new string[] {"value1", "value2"};
         }

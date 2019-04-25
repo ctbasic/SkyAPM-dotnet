@@ -85,11 +85,7 @@ namespace SkyApm.Agent.AspNet.Extensions
     }
 
 #else
-
-    using Autofac;
-    using SkyApm.Thrift;
     using SkyApm.Utilities.DependencyInjection;
-    using SkyApm.Utilities.DependencyInjectionEx.Dependency;
     internal static class ServiceCollectionExtensions
     {
         public static IServiceCollectionContainer AddSkyAPMCore(this IServiceCollectionContainer services)
@@ -134,7 +130,6 @@ namespace SkyApm.Agent.AspNet.Extensions
 
             services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
             services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
-            services.AddSkyApmExtensions().AddThriftTrace();
             return services;
         }
     }

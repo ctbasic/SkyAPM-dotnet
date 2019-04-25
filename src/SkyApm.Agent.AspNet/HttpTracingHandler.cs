@@ -42,7 +42,7 @@ namespace SkyApm.Agent.AspNet
             InnerHandler = innerHandler;
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
             var tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
@@ -57,15 +57,16 @@ namespace SkyApm.Agent.AspNet
                 context.Span.AddTag(Common.Tags.URL, request.RequestUri.ToString());
                 context.Span.AddTag(Common.Tags.PATH, request.RequestUri.PathAndQuery);
                 context.Span.AddTag(Common.Tags.HTTP_METHOD, request.Method.ToString());
-                var response = await base.SendAsync(request, cancellationToken);
-                var statusCode = (int) response.StatusCode;
+                var response = base.SendAsync(request, cancellationToken).GetAwaiter().GetResult();
+
+                var statusCode = (int)response.StatusCode;
                 if (statusCode >= 400)
                 {
                     context.Span.ErrorOccurred();
                 }
 
                 context.Span.AddTag(Common.Tags.STATUS_CODE, statusCode);
-                return response;
+                return Task.FromResult(response);
             }
             catch (Exception exception)
             {

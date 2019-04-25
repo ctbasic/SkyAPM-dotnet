@@ -41,9 +41,10 @@ namespace Thrift.Protocol
         protected bool strictRead_ = false;
         protected bool strictWrite_ = true;
 
-        private SegmentContext segmentContext;
-
         private static SkyApm.Logging.ILogger logger = ServiceLocator.Current.GetInstance<SkyApm.Logging.ILoggerFactory>().CreateLogger(typeof(TCtSkyApmClientBinaryProtocol));
+        private readonly ITracingContext tracingContext;
+        private readonly IExitSegmentContextAccessor segmentContextAccessor;
+
 
         #region BinaryProtocol Factory
         /**
@@ -84,6 +85,9 @@ namespace Thrift.Protocol
         {
             strictRead_ = strictRead;
             strictWrite_ = strictWrite;
+
+            tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
+            segmentContextAccessor = ServiceLocator.Current.GetInstance<IExitSegmentContextAccessor>();
         }
 
         #region Write Methods
@@ -114,13 +118,12 @@ namespace Thrift.Protocol
             {
                 var host = "";
                 var port = 0;
-                var tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
                 var operationName = sourceMsgName;
                 var networkAddress = $"{host}:{port}";
 
                 ThriftHeaders thriftHeader=new ThriftHeaders();
 
-                segmentContext = tracingContext.CreateExitSegmentContext(operationName, networkAddress,new ThriftICarrierHeaderCollection(thriftHeader));
+                var segmentContext = tracingContext.CreateExitSegmentContext(operationName, networkAddress,new ThriftICarrierHeaderCollection(thriftHeader));
                 segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
                 segmentContext.Span.Component = Components.THRIFTCLIENT;
                 segmentContext.Span.AddTag(Tags.RPC_METHOD, operationName);
@@ -305,13 +308,12 @@ namespace Thrift.Protocol
         {
             try
             {
-                var tracingContext = ServiceLocator.Current.GetInstance<ITracingContext>();
-                tracingContext.Release(segmentContext);
 
-                if (segmentContext == null)
+                if (segmentContextAccessor.Context == null)
                 {
                     logger.Warning("ThriftServerSend Context is null");
                 }
+                tracingContext.Release(segmentContextAccessor.Context);
             }
             catch (Exception e)
             {

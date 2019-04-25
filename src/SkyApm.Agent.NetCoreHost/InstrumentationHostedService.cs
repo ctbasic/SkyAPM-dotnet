@@ -16,8 +16,10 @@
  *
  */
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using Microsoft.Extensions.Hosting;
 
 namespace SkyApm.Agent.NetCoreHost
@@ -26,8 +28,10 @@ namespace SkyApm.Agent.NetCoreHost
     {
         private readonly IInstrumentStartup _startup;
 
-        public InstrumentationHostedService(IInstrumentStartup startup)
+        public InstrumentationHostedService(IInstrumentStartup startup, IServiceProvider serviceProvider)
         {
+            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+            ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
             _startup = startup;
         }
 
