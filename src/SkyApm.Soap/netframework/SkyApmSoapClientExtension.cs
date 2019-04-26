@@ -61,7 +61,6 @@ namespace SkyApm.Soap
                 case SoapMessageStage.AfterSerialize: // 当作为服务端被外部访问时最后一步
                     responseXml = SetContentToXml(responseStream);
                     CopyStream(responseStream, requestStream);
-
                     break;
             }
         }
@@ -76,26 +75,19 @@ namespace SkyApm.Soap
             try
             {
                 var requestUri = new Uri(message.Url);
-                var operationName = message.MethodInfo.Name;
+                var operationName = requestUri.ToString();
                 var networkAddress = $"{requestUri.Host}:{requestUri.Port}";
 
-                SoapICarrierHeader soapICarrierHeader = new SoapICarrierHeader();
-                var context = tracingContext.CreateExitSegmentContext(operationName, networkAddress,
-                    new SoapICarrierHeaderCollection(soapICarrierHeader));
-
-                //context.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
-                //context.Span.Component = Components.SOAPCLIENT;
-                //context.Span.AddTag(Tags.RPC_METHOD, operationName);
-                //context.Span.AddTag(Tags.RPC_TYPE, "soap");
+                SoapICarrierHeaders soapICarrierHeaders = new SoapICarrierHeaders();
+                var context = tracingContext.CreateExitSegmentContext(operationName, networkAddress,new SoapICarrierHeaderCollection(soapICarrierHeaders));
 
                 context.Span.SpanLayer = SpanLayer.HTTP;
                 context.Span.Component = Common.Components.HTTPCLIENT;
                 context.Span.AddTag(Common.Tags.URL, requestUri.ToString());
-                context.Span.AddTag(Common.Tags.PATH, requestUri.ToString());
+                context.Span.AddTag(Common.Tags.PATH, message.MethodInfo.Name);
                 context.Span.AddTag(Common.Tags.HTTP_METHOD, "POST");
 
-
-                string header = SoapHeaderUtils.WrapSoapICarrierHeader(soapICarrierHeader);
+                string header = soapICarrierHeaders.EncodeSoapICarrierHeader();
                 message.Headers.Insert(0, new SkyApmSoapHeader {SkyApmHeaderString = header});
             }
             catch (Exception e)

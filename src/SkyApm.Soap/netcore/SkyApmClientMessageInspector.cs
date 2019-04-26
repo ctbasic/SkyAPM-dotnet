@@ -2,8 +2,6 @@
 using CommonServiceLocator;
 using SkyApm.Tracing;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
@@ -35,44 +33,20 @@ namespace SkyApm.Soap.netcore
             var operationName = requestUri.ToString();
             var networkAddress = $"{requestUri.Host}:{requestUri.Port}";
 
-            //SoapICarrierHeader soapICarrierHeader = new SoapICarrierHeader();
-            var context = tracingContext.CreateExitSegmentContext(operationName, networkAddress, new SoapICarrierHeaderCollection(request.Headers));
-            context.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
-            context.Span.Component = Components.SOAPCLIENT;
-            context.Span.AddTag(Tags.RPC_METHOD, operationName);
-            context.Span.AddTag(Tags.RPC_TYPE, "soap");
+            SoapICarrierHeaders soapICarrierHeader = new SoapICarrierHeaders();
+            var context = tracingContext.CreateExitSegmentContext(operationName, networkAddress, new SoapICarrierHeaderCollection(soapICarrierHeader));
+            context.Span.SpanLayer = SpanLayer.HTTP;
+            context.Span.Component = Components.HTTPCLIENT;
+            context.Span.AddTag(Common.Tags.URL, requestUri.ToString());
 
-            //string header = SoapHeaderUtils.WrapSoapICarrierHeader(soapICarrierHeader);
-            //request.Headers.Insert(0, new SkyApmMessageHeader(header));
+            var actionUri = new Uri(request.Headers.Action);
+            context.Span.AddTag(Common.Tags.PATH, actionUri.PathAndQuery.TrimStart('/'));
+            context.Span.AddTag(Common.Tags.HTTP_METHOD, "POST");
 
-            request.Headers.Insert(0, MessageHeader.CreateHeader("SkyApmHeaderString", "", ""));
+            string header = soapICarrierHeader.EncodeSoapICarrierHeader();
+            request.Headers.Insert(0, new SkyApmMessageHeader(header));
 
             return Guid.NewGuid();
-        }
-
-        private class SoapICarrierHeaderCollection : ICarrierHeaderCollection
-        {
-            private readonly MessageHeaders soapICarrierHeader;
-
-            public SoapICarrierHeaderCollection(MessageHeaders headers)
-            {
-                soapICarrierHeader = headers;
-            }
-
-            public void Add(string key, string value)
-            {
-                soapICarrierHeader.Add(MessageHeader.CreateHeader(key, string.Empty, value));
-            }
-
-            public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-            {
-                throw new NotImplementedException();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
         }
     }
 }

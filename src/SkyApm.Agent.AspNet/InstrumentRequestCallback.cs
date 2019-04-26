@@ -17,15 +17,13 @@
  */
 
 using System;
-using System.IO;
 using System.Web;
-using System.Xml;
 using SkyApm.Common;
 using SkyApm.Config;
 using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
-using SpanLayer = SkyApm.Tracing.Segments.SpanLayer;
 using SkyApm.Agent.AspNet.CtCustom;
+using SkyApm.Soap.netframework;
 
 namespace SkyApm.Agent.AspNet
 {
@@ -57,20 +55,22 @@ namespace SkyApm.Agent.AspNet
                 //asp.net Exclude OPTIONS request
                 return;
             }
-            //using (Stream inputStream= httpContext.Request.GetBufferedInputStream())
-            //{
-            //    TextReader reader = new StreamReader(inputStream);
-            //    string inputContet = reader.ReadToEnd();
-            //}
 
+            httpContext.Request.InjectSoapHeaderToHttpHeader();
 
-                var context = _tracingContext.CreateEntrySegmentContext(httpContext.Request.Path,
-                    new HttpRequestCarrierHeaderCollection(httpContext.Request));
+            var context = _tracingContext.CreateEntrySegmentContext(httpContext.Request.Path, new HttpRequestCarrierHeaderCollection(httpContext.Request));
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Peer = new StringOrIntValue(httpContext.Request.UserHostAddress);
-            context.Span.Component = Common.Components.ASPNET;
+            context.Span.Component = Components.ASPNET;
             context.Span.AddTag(Tags.URL, httpContext.Request.Url.OriginalString);
-            context.Span.AddTag(Tags.PATH, httpContext.Request.Path);
+            if (httpContext.Request.IsSoapRequest())
+            {
+                context.Span.AddTag(Tags.PATH, httpContext.Request.GetSoapActionName());
+            }
+            else
+            {
+                context.Span.AddTag(Tags.PATH, httpContext.Request.Path);
+            }
             context.Span.AddTag(Tags.HTTP_METHOD, httpContext.Request.HttpMethod);
             context.Span.AddLog(LogEvent.Event("AspNet BeginRequest"),
                 LogEvent.Message(
@@ -80,13 +80,17 @@ namespace SkyApm.Agent.AspNet
 
         public void ApplicationOnEndRequest(object sender, EventArgs e)
         {
+            var httpApplication = sender as HttpApplication;
+            if (httpApplication == null)
+            {
+                return;
+            }
             var context = _contextAccessor.Context ?? AspNetWebUtils.SegmentContext;
             if (context == null)
             {
                 return;
             }
-            
-            var httpApplication = sender as HttpApplication;
+
             var httpContext = httpApplication.Context;
             if (httpContext.Request.HttpMethod == "OPTIONS")
             {

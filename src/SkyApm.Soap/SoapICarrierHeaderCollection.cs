@@ -7,21 +7,21 @@ namespace SkyApm.Soap
 {
     internal class SoapICarrierHeaderCollection : ICarrierHeaderCollection
     {
-        private readonly SoapICarrierHeader soapICarrierHeader;
+        private readonly SoapICarrierHeaders soapICarrierHeaders;
 
-        public SoapICarrierHeaderCollection(SoapICarrierHeader headers)
+        public SoapICarrierHeaderCollection(SoapICarrierHeaders headerses)
         {
-            soapICarrierHeader = headers;
+            soapICarrierHeaders = headerses;
         }
 
         public void Add(string key, string value)
         {
-            soapICarrierHeader.Add(key, value);
+            soapICarrierHeaders.Add(key, value);
         }
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
-            return soapICarrierHeader.GetEnumerator();
+            return soapICarrierHeaders.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

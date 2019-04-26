@@ -45,6 +45,8 @@ namespace Thrift.Protocol
         private readonly ITracingContext tracingContext;
         private readonly IExitSegmentContextAccessor segmentContextAccessor;
 
+        
+
 
         #region BinaryProtocol Factory
         /**
@@ -116,18 +118,16 @@ namespace Thrift.Protocol
         {
             try
             {
-                var host = "";
-                var port = 0;
                 var operationName = sourceMsgName;
-                var networkAddress = $"{host}:{port}";
+                TSocket tsocket = (TSocket)trans;
+                var networkAddress = $"{tsocket.Host}:{tsocket.Port}";
 
                 ThriftHeaders thriftHeader=new ThriftHeaders();
 
                 var segmentContext = tracingContext.CreateExitSegmentContext(operationName, networkAddress,new ThriftICarrierHeaderCollection(thriftHeader));
                 segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
-                segmentContext.Span.Component = Components.THRIFTCLIENT;
+                segmentContext.Span.Component = Components.THRIFT;
                 segmentContext.Span.AddTag(Tags.RPC_METHOD, operationName);
-                segmentContext.Span.AddTag(Tags.RPC_TYPE, "thrift");
 
                 string header = ProtocolUtils.WrapBinaryProtocolHeader(thriftHeader);
 

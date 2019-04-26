@@ -310,12 +310,15 @@ namespace Thrift.Protocol
         {
             try
             {
+                var tsocket = (TSocket)trans;
+                string address = tsocket.TcpClient.Client.LocalEndPoint.ToString();
+
                 var segmentContext = tracingContext.CreateEntrySegmentContext(methodName, new ThriftICarrierHeaderCollection(headers));
                 segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
-                segmentContext.Span.Component = Components.ASPNETCORE;
-                segmentContext.Span.Peer = new StringOrIntValue("192.168.1.1:11");
+
+                segmentContext.Span.Component = Components.THRIFT;
+                segmentContext.Span.Peer = new StringOrIntValue(address);
                 segmentContext.Span.AddTag(Tags.RPC_METHOD, methodName);
-                segmentContext.Span.AddTag(Tags.RPC_TYPE, "thrift");
                 segmentContext.Span.AddLog(
                     LogEvent.Event("Thrift Hosting BeginRequest"),
                     LogEvent.Message(

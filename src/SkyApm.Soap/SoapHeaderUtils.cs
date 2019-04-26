@@ -24,26 +24,26 @@ namespace SkyApm.Soap
         private const char HEADER_KEY_VALUE_SEPARATOR = '|';
 
 #if !NETSTANDARD
-        public static SoapICarrierHeader GetSoapICarrierHeader(SoapHeaderCollection soapHeaders)
+        public static SoapICarrierHeaders ExtractSoapICarrierHeader(this SoapHeaderCollection soapHeaders)
         {
             try
             {
-                SoapICarrierHeader carrierHeader = new SoapICarrierHeader();
+                SoapICarrierHeaders carrierHeaders = new SoapICarrierHeaders();
                 if (soapHeaders == null || soapHeaders.Count <= 0)
                 {
-                    return carrierHeader;
+                    return carrierHeaders;
                 }
 
                 var header = soapHeaders[0];
                 if (!(header is SoapUnknownHeader))
                 {
-                    return carrierHeader;
+                    return carrierHeaders;
                 }
 
                 var unknownHeader = header as SoapUnknownHeader;
                 if (unknownHeader.Element.Name != SOAP_HEADER_NAME)
                 {
-                    return carrierHeader;
+                    return carrierHeaders;
                 }
 
                 string headersValue = unknownHeader.Element.InnerText;
@@ -61,17 +61,17 @@ namespace SkyApm.Soap
                         value = keyValue[1];
                     }
 
-                    if (!string.IsNullOrWhiteSpace(key) && !carrierHeader.Contains(key))
+                    if (!string.IsNullOrWhiteSpace(key) && !carrierHeaders.Contains(key))
                     {
-                        carrierHeader.Add(key, value);
+                        carrierHeaders.Add(key, value);
                     }
                 }
 
-                return carrierHeader;
+                return carrierHeaders;
             }
             catch (Exception e)
             {
-                throw new Exception("GetSoapICarrierHeader error", e);
+                throw new Exception("ExtractSoapICarrierHeader error", e);
             }
         }
 #endif
@@ -81,7 +81,7 @@ namespace SkyApm.Soap
         /// </summary>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public static string WrapSoapICarrierHeader(SoapICarrierHeader headers)
+        public static string EncodeSoapICarrierHeader(this SoapICarrierHeaders headers)
         {
             if (headers == null || headers.ToList().Count <= 0)
             {
@@ -95,6 +95,41 @@ namespace SkyApm.Soap
             }
 
             return headerStr.TrimEnd(HEADER_SEPARATOR);
+        }
+
+        /// <summary>
+        ///     包装头信息
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public static SoapICarrierHeaders ExtractSoapICarrierHeader(this string headers)
+        {
+            SoapICarrierHeaders carrierHeaders = new SoapICarrierHeaders();
+            if (string.IsNullOrWhiteSpace(headers))
+            {
+                return carrierHeaders;
+            }
+
+            string[] headerKeyValues = headers.Split(HEADER_SEPARATOR);
+
+            foreach (var keyValueStr in headerKeyValues)
+            {
+                string[] keyValue = keyValueStr.Split(HEADER_KEY_VALUE_SEPARATOR);
+                string key = "";
+                string value = "";
+                if (keyValue.Length == 2)
+                {
+                    key = keyValue[0];
+                    value = keyValue[1];
+                }
+
+                if (!string.IsNullOrWhiteSpace(key) && !carrierHeaders.Contains(key))
+                {
+                    carrierHeaders.Add(key, value);
+                }
+            }
+
+            return carrierHeaders;
         }
     }
 }

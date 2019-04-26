@@ -39,8 +39,8 @@ namespace SkyApm.Common
 
         public static readonly string MQ_TOPIC = "mq.topic";
 
-        public static readonly string RPC_METHOD = "prc.method";
+        public static readonly string RPC_METHOD = "rpc.method";
 
-        public static readonly string RPC_TYPE = "prc.type";
+        public static readonly string RPC_TYPE = "rpc.type";
     }
 }

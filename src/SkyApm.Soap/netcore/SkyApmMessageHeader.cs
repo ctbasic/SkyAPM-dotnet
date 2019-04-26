@@ -18,6 +18,7 @@ namespace SkyApm.Soap.netcore
         }
 
         public override string Namespace { get; }
+
         protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
         {
             writer.WriteElementString(Name, header);

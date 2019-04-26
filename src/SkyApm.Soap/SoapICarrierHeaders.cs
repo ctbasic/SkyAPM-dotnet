@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace SkyApm.Soap
 {
-    internal class SoapICarrierHeader:IEnumerable<KeyValuePair<string, string>>
+    internal class SoapICarrierHeaders:IEnumerable<KeyValuePair<string, string>>
     {
         private List<KeyValuePair<string, string>> dataStore;
 
-        public SoapICarrierHeader()
+        public SoapICarrierHeaders()
         {
             if (dataStore == null)
             {

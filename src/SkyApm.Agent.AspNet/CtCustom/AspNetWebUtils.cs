@@ -1,4 +1,8 @@
+using System;
+using System.IO;
 using System.Web;
+using System.Linq;
+using System.Xml.Linq;
 using SkyApm.Tracing.Segments;
 
 namespace SkyApm.Agent.AspNet.CtCustom
