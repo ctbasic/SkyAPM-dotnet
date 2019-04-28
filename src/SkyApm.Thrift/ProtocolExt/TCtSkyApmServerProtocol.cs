@@ -313,7 +313,8 @@ namespace Thrift.Protocol
                 var tsocket = (TSocket)trans;
                 string address = tsocket.TcpClient.Client.LocalEndPoint.ToString();
 
-                var segmentContext = tracingContext.CreateEntrySegmentContext(methodName, new ThriftICarrierHeaderCollection(headers));
+                string operateName = "/" + methodName;
+                var segmentContext = tracingContext.CreateEntrySegmentContext(operateName, new ThriftICarrierHeaderCollection(headers));
                 segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
 
                 segmentContext.Span.Component = Components.THRIFT;

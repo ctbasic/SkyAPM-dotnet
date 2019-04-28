@@ -118,16 +118,16 @@ namespace Thrift.Protocol
         {
             try
             {
-                var operationName = sourceMsgName;
                 TSocket tsocket = (TSocket)trans;
                 var networkAddress = $"{tsocket.Host}:{tsocket.Port}";
 
-                ThriftHeaders thriftHeader=new ThriftHeaders();
+                var operationName = networkAddress + "/" + sourceMsgName;
 
+                ThriftHeaders thriftHeader=new ThriftHeaders();
                 var segmentContext = tracingContext.CreateExitSegmentContext(operationName, networkAddress,new ThriftICarrierHeaderCollection(thriftHeader));
                 segmentContext.Span.SpanLayer = SpanLayer.RPC_FRAMEWORK;
                 segmentContext.Span.Component = Components.THRIFT;
-                segmentContext.Span.AddTag(Tags.RPC_METHOD, operationName);
+                segmentContext.Span.AddTag(Tags.RPC_METHOD, sourceMsgName);
 
                 string header = ProtocolUtils.WrapBinaryProtocolHeader(thriftHeader);
 

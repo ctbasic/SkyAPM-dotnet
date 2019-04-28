@@ -83,8 +83,10 @@ namespace SkyApm.Soap
 
                 context.Span.SpanLayer = SpanLayer.HTTP;
                 context.Span.Component = Common.Components.HTTPCLIENT;
-                context.Span.AddTag(Common.Tags.URL, requestUri.ToString());
-                context.Span.AddTag(Common.Tags.PATH, message.MethodInfo.Name);
+                string url = requestUri.ToString() + "/" + message.MethodInfo.Name;
+                context.Span.AddTag(Common.Tags.URL, url);
+                string path = requestUri.PathAndQuery + "/" + message.MethodInfo.Name;
+                context.Span.AddTag(Common.Tags.PATH, path);
                 context.Span.AddTag(Common.Tags.HTTP_METHOD, "POST");
 
                 string header = soapICarrierHeaders.EncodeSoapICarrierHeader();

@@ -58,17 +58,28 @@ namespace SkyApm.Agent.AspNet
 
             httpContext.Request.InjectSoapHeaderToHttpHeader();
 
-            var context = _tracingContext.CreateEntrySegmentContext(httpContext.Request.Path, new HttpRequestCarrierHeaderCollection(httpContext.Request));
+            string operateName = httpContext.Request.Path;
+            string soapActionName = string.Empty;
+            if (httpContext.Request.IsSoapRequest())
+            {
+                soapActionName = httpContext.Request.GetSoapActionName();
+                operateName = operateName + "/" + soapActionName;
+            }
+
+            var context = _tracingContext.CreateEntrySegmentContext(operateName, new HttpRequestCarrierHeaderCollection(httpContext.Request));
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Peer = new StringOrIntValue(httpContext.Request.UserHostAddress);
             context.Span.Component = Components.ASPNET;
-            context.Span.AddTag(Tags.URL, httpContext.Request.Url.OriginalString);
+
             if (httpContext.Request.IsSoapRequest())
             {
-                context.Span.AddTag(Tags.PATH, httpContext.Request.GetSoapActionName());
+
+                context.Span.AddTag(Tags.URL, httpContext.Request.Url.OriginalString + "/" + soapActionName);
+                context.Span.AddTag(Tags.PATH, httpContext.Request.Url.AbsolutePath + "/" + soapActionName);
             }
             else
             {
+                context.Span.AddTag(Tags.URL, httpContext.Request.Url.OriginalString);
                 context.Span.AddTag(Tags.PATH, httpContext.Request.Path);
             }
             context.Span.AddTag(Tags.HTTP_METHOD, httpContext.Request.HttpMethod);

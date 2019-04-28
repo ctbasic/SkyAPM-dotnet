@@ -30,17 +30,18 @@ namespace SkyApm.Soap.netcore
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
             var requestUri = channel.RemoteAddress.Uri;
-            var operationName = requestUri.ToString();
+            var actionUri = new Uri(request.Headers.Action);
+            string actionName = actionUri.PathAndQuery.Replace("/", "");
+            var operationName = requestUri.ToString() + "/" + actionName;
             var networkAddress = $"{requestUri.Host}:{requestUri.Port}";
 
             SoapICarrierHeaders soapICarrierHeader = new SoapICarrierHeaders();
             var context = tracingContext.CreateExitSegmentContext(operationName, networkAddress, new SoapICarrierHeaderCollection(soapICarrierHeader));
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Component = Components.HTTPCLIENT;
-            context.Span.AddTag(Common.Tags.URL, requestUri.ToString());
 
-            var actionUri = new Uri(request.Headers.Action);
-            context.Span.AddTag(Common.Tags.PATH, actionUri.PathAndQuery.TrimStart('/'));
+            context.Span.AddTag(Common.Tags.URL, requestUri.ToString()+"/"+ actionName);
+            context.Span.AddTag(Common.Tags.PATH, actionUri.PathAndQuery + "/" + actionName);
             context.Span.AddTag(Common.Tags.HTTP_METHOD, "POST");
 
             string header = soapICarrierHeader.EncodeSoapICarrierHeader();
