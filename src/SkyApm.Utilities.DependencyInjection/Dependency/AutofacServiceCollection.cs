@@ -4,7 +4,7 @@ using System;
 using Autofac;
 using SkyApm.Utilities.DependencyInjection;
 
-namespace SkyApm.Utilities.DependencyInjectionEx.Dependency
+namespace SkyApm.Utilities.DependencyInjection.Dependency
 {
     public class AutofacServiceCollection:IServiceCollectionContainer
     {

@@ -13,14 +13,6 @@ using ThriftServer;
 
 namespace SkyApm.Sample.ThriftBackend
 {
-    public static class AA
-    {
-        //public static IHost Run(this IHost host)
-        //{
-        //    ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
-        //}
-    } 
-
     class Program
     {
         static void Main(string[] args)
@@ -69,43 +61,42 @@ namespace SkyApm.Sample.ThriftBackend
             //server.Serve();
             //Console.ReadLine();
         }
+    }
 
+    public class BaseProcessor : TProcessor
+    {
+        private TProcessor _processor;
 
-        public class BaseProcessor : TProcessor
+        public BaseProcessor(TProcessor processor)
         {
-            private TProcessor _processor;
+            _processor = processor;
+        }
 
-            public BaseProcessor(TProcessor processor)
-            {
-                _processor = processor;
-            }
+        /** 
+         * 该方法，客户端每调用一次，就会触发一次 
+         */
+        public bool Process(TProtocol iprot, TProtocol oprot)
+        {
+            TSocket socket = (TSocket)iprot.Transport;
 
-            /** 
-             * 该方法，客户端每调用一次，就会触发一次 
-             */
-            public bool Process(TProtocol iprot, TProtocol oprot)
-            {
-                TSocket socket = (TSocket)iprot.Transport;
+            IPEndPoint ip = (IPEndPoint)socket.TcpClient.Client.RemoteEndPoint;
 
-                IPEndPoint ip = (IPEndPoint)socket.TcpClient.Client.RemoteEndPoint;
+            //string serviceName = "rpctest";
+            //serverTrace = new ServerTrace(serviceName, ProtocolUtils.RPC_NAME);
+            //string host = "127.0.0.1";
+            //trace.Record(Annotations.Tag("http.host", host));
+            //string url = methodName;
+            //trace.Record(Annotations.Tag("http.uri", url));
+            //string path = methodName;
+            //trace.Record(Annotations.Tag("http.path", path));
 
-                //string serviceName = "rpctest";
-                //serverTrace = new ServerTrace(serviceName, ProtocolUtils.RPC_NAME);
-                //string host = "127.0.0.1";
-                //trace.Record(Annotations.Tag("http.host", host));
-                //string url = methodName;
-                //trace.Record(Annotations.Tag("http.uri", url));
-                //string path = methodName;
-                //trace.Record(Annotations.Tag("http.path", path));
+            //serverTrace.TracedActionAsync(Task.Run(() => { })).Wait();
 
-                //serverTrace.TracedActionAsync(Task.Run(() => { })).Wait();
 
-                
 
-                return _processor.Process(iprot, oprot);
-                //}
+            return _processor.Process(iprot, oprot);
+            //}
 
-            }
         }
     }
 }

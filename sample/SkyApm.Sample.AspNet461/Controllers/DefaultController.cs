@@ -13,10 +13,11 @@ namespace SkyApm.Sample.AspNet461.Controllers
         // GET: api/Default
         public IEnumerable<string> Get()
         {
-
             SkyApmSoapService client = new SkyApmSoapService();
             client.HelloWorld();
             return new string[] { "value1", "value2" };
         }
     }
+
+
 }

@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SkyApm.Abstractions\SkyApm.Abstractions.csproj" />
     <ProjectReference Include="..\SkyApm.Core\SkyApm.Core.csproj" />
+    <ProjectReference Include="..\SkyApm.Diagnostics.HttpClient\SkyApm.Diagnostics.HttpClient.csproj" />
     <ProjectReference Include="..\SkyApm.Thrift\SkyApm.Thrift.csproj" />
     <ProjectReference Include="..\SkyApm.Transport.Grpc.Protocol\SkyApm.Transport.Grpc.Protocol.csproj" />
     <ProjectReference Include="..\SkyApm.Transport.Grpc\SkyApm.Transport.Grpc.csproj" />

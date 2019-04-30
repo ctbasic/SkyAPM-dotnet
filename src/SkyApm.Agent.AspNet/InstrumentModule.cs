@@ -26,7 +26,7 @@ using Nito.AsyncEx;
 using System.Threading.Tasks;
 #endif
 using SkyApm.Agent.AspNet.Extensions;
-using SkyApm.Utilities.DependencyInjectionEx.Dependency;
+using SkyApm.Utilities.DependencyInjection.Dependency;
 
 namespace SkyApm.Agent.AspNet
 {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
+using SkyApm.Agent.AspNet;
 
 namespace SkyApm.Sample.AspNet45.Controllers
 {
@@ -12,6 +14,21 @@ namespace SkyApm.Sample.AspNet45.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
+            //测试服务器
+            string reqUrl = "http://192.168.1.201:3003/MvcDemo";
+            var result = new ContentResult();
+
+            //HttpClient httpClient = new HttpClient(new HttpTracingHandler());
+
+            var httpClient = HttpClientFactory.Create(new HttpTracingHandler(null));
+
+            HttpRequestMessage message = new HttpRequestMessage();
+            message.RequestUri = new Uri(reqUrl);
+
+            var reqResult = httpClient.SendAsync(message).Result;
+
+            result.Content = reqResult.Content.ReadAsStringAsync().Result;
+
             return new string[] { "value1", "value2" };
         }
 

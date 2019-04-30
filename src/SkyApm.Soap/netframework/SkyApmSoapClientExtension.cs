@@ -35,7 +35,7 @@ namespace SkyApm.Soap
 
         public override void ProcessMessage(SoapMessage message)
         {
-            var isClientMessage = message is SoapClientMessage;
+               var isClientMessage = message is SoapClientMessage;
 
             switch (message.Stage)
             {

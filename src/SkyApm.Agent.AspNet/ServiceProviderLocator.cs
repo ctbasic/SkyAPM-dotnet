@@ -19,7 +19,6 @@
 using CommonServiceLocator;
 using System;
 using System.Collections.Generic;
-using SkyApm.Utilities.DependencyInjection;
 
 namespace SkyApm.Agent.AspNet
 {

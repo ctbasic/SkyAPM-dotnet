@@ -3,7 +3,7 @@
 using System;
 using Autofac;
 
-namespace SkyApm.Utilities.DependencyInjectionEx.Dependency
+namespace SkyApm.Utilities.DependencyInjection.Dependency
 {
     public class AutofacServiceProvider : IServiceProvider
     {

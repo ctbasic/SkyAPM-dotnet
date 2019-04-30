@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SkyApm.Config;
 using SkyApm.Diagnostics;
+using SkyApm.Diagnostics.HttpClient;
 using SkyApm.Logging;
 using SkyApm.Sampling;
 using SkyApm.Service;
@@ -57,7 +58,7 @@ namespace SkyApm.Agent.NetCoreHost.Extensions
             services.AddSingleton<IHostedService, InstrumentationHostedService>();
             services.AddSingleton<IEnvironmentProvider, HostingEnvironmentProvider>();
             services.AddTracing().AddSampling().AddGrpcTransport().AddLogging();
-            services.AddSkyApmExtensions();
+            services.AddSkyApmExtensions().AddHttpClient();
             return services;
         }
 

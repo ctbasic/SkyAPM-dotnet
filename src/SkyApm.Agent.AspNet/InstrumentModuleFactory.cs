@@ -24,7 +24,7 @@ using SkyApm.Agent.AspNet.Extensions;
 #if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
 #else
-using SkyApm.Utilities.DependencyInjectionEx.Dependency;
+using SkyApm.Utilities.DependencyInjection.Dependency;
 #endif
 
 [assembly: PreApplicationStartMethod(typeof(InstrumentModuleFactory), nameof(InstrumentModuleFactory.Create))]
@@ -35,19 +35,21 @@ namespace SkyApm.Agent.AspNet
     {
         public static void Create()
         {
-#if NETSTANDARD
-            var serviceProvider = new ServiceCollection().AddSkyAPMCore().BuildServiceProvider();
-            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+            //#if NETSTANDARD
+            //            var serviceProvider = new ServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+            //            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
 
 
-#else
-            var serviceProvider = new AutofacServiceCollection().AddSkyAPMCore().BuildServiceProvider();
-            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
-#endif
-            ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
+            //#else
+            //            var serviceProvider = new AutofacServiceCollection().AddSkyAPMCore().BuildServiceProvider();
+            //            var serviceLocatorProvider = new ServiceProviderLocator(serviceProvider);
+            //#endif
+            //            ServiceLocator.SetLocatorProvider(() => serviceLocatorProvider);
 
-            var ctSkyApmAgent = ServiceLocator.Current.GetInstance<ICtSkyApmAgent>();
-            ctSkyApmAgent.StartAsync();
+            //            var ctSkyApmAgent = ServiceLocator.Current.GetInstance<ICtSkyApmAgent>();
+            //            ctSkyApmAgent.StartAsync();
+
+            CtSkyApmNetFxAgent.StartAsync();
 
             DynamicModuleUtility.RegisterModule(typeof(InstrumentModule));
         }

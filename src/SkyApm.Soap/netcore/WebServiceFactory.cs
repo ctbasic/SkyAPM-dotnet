@@ -25,25 +25,25 @@ namespace SkyApm.Soap.netcore
         /// 获取服务实例信息
         /// </summary>
         /// <returns></returns>
-        public static ServiceClass GetInstance<ServiceClass>(string serviceUrl) where ServiceClass : ICommunicationObject
+        public static TServiceClass GetInstance<TServiceClass>(string serviceUrl) where TServiceClass : ICommunicationObject
         {
             if (string.IsNullOrEmpty(serviceUrl))
             {
-                return default(ServiceClass);
+                return default(TServiceClass);
             }
             if (concurrentDictionary.TryGetValue(serviceUrl, out object value) && CheckSoapStatus(serviceUrl, value))
             {
-                return (ServiceClass)value;
+                return (TServiceClass)value;
             }
 
             lock (lockObject)
             {
                 if (concurrentDictionary.TryGetValue(serviceUrl, out value) && CheckSoapStatus(serviceUrl, value))
                 {
-                    return (ServiceClass)value;
+                    return (TServiceClass)value;
                 }
 
-                var createInstance = CreateServiceClass<ServiceClass>(serviceUrl);
+                var createInstance = CreateServiceClass<TServiceClass>(serviceUrl);
                 concurrentDictionary.TryAdd(serviceUrl, createInstance);
                 return createInstance;
             }
@@ -81,7 +81,6 @@ namespace SkyApm.Soap.netcore
             System.Reflection.PropertyInfo property = createInstance.GetType().GetProperty("Endpoint");
             ServiceEndpoint endpoint = (ServiceEndpoint)property.GetValue(createInstance, null);
             endpoint.SetSkyApmClientBehavior();
-
             return createInstance;
         }
 

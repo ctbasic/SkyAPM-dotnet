@@ -32,6 +32,18 @@ namespace SkyApm.Agent.AspNet
 {
     public class HttpTracingHandler : DelegatingHandler
     {
+        /// <summary>
+        /// <code>
+        /// 使用示例代码
+        /// 
+        /// var httpClient = new HttpClient(new HttpTracingHandler())
+        ///
+        /// OR
+        ///
+        /// var httpClient = HttpClientFactory.Create(new HttpTracingHandler(null))
+        ///
+        /// </code>
+        /// </summary>
         public HttpTracingHandler()
             : this(new HttpClientHandler())
         {
@@ -39,7 +51,10 @@ namespace SkyApm.Agent.AspNet
 
         public HttpTracingHandler(HttpMessageHandler innerHandler)
         {
-            InnerHandler = innerHandler;
+            if (innerHandler != null)
+            {
+                InnerHandler = innerHandler;
+            }
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,

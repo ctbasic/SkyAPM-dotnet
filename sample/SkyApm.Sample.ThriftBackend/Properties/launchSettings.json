@@ -1,10 +1,7 @@
 {
   "profiles": {
     "SkyApm.Sample.ThriftBackend": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "CtSkyAPM.Agent.AspNetCore"
-      }
+      "commandName": "Project"
     }
   }
 }

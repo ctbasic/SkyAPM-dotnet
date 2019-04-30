@@ -9,7 +9,7 @@ using SkyApm.Abstractions.Common;
 
 namespace SkyApm.Agent.AspNet
 {
-    public class CtSkyApmAgent: ICtSkyApmAgent
+    internal class CtSkyApmAgent: ICtSkyApmAgent
     {
         private readonly IInstrumentStartup instrumentStartup;
 

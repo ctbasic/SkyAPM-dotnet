@@ -109,6 +109,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.AspNet45", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyApm.Soap", "src\SkyApm.Soap\SkyApm.Soap.csproj", "{56AE2797-4E20-444F-8632-7E3F5DA088D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.WinService", "sample\SkyApm.Sample.WinService\SkyApm.Sample.WinService.csproj", "{C4266BBB-382C-4D2A-A79A-B327DCA86BE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -247,6 +249,10 @@ Global
 		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56AE2797-4E20-444F-8632-7E3F5DA088D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4266BBB-382C-4D2A-A79A-B327DCA86BE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4266BBB-382C-4D2A-A79A-B327DCA86BE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4266BBB-382C-4D2A-A79A-B327DCA86BE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4266BBB-382C-4D2A-A79A-B327DCA86BE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -293,6 +299,7 @@ Global
 		{B075AD12-D6F4-4413-8FB1-9FD90FD750FB} = {EF6194B2-9ACB-49B9-8049-DD6AFAEB0399}
 		{02946AD8-629D-441C-B4A5-47BB9FFAD21F} = {844CEACD-4C85-4B15-9E2B-892B01FDA4BB}
 		{56AE2797-4E20-444F-8632-7E3F5DA088D6} = {88AEFE60-F743-4AF3-8F55-B4B7B8079D95}
+		{C4266BBB-382C-4D2A-A79A-B327DCA86BE3} = {844CEACD-4C85-4B15-9E2B-892B01FDA4BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94C0DA2C-CCCB-4314-93A2-9809B5DD0583}
