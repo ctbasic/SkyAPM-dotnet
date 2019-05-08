@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SkyApm.Soap.netcore;
+using Thrift.Client;
 
 namespace SkyApm.Sample2.NetCoreWeb.Controllers
 {
@@ -24,7 +25,25 @@ namespace SkyApm.Sample2.NetCoreWeb.Controllers
             var result2 = instance.HelloWorldAsync().GetAwaiter().GetResult();
 
 
-            return new string[] { result, result2.Body.HelloWorldResult };
+            string result3 = "";
+            using (var svc = ThriftClientManager<TcyApp.Demo.Thrift.ClassRoomThrift.Client>.GetClient("TcyAppDemoThrift"))
+            {
+                {
+                    try
+                    {
+                        var info = svc.Client.GetClassRoom();
+                        result3=Newtonsoft.Json.JsonConvert.SerializeObject(info);
+                    }
+                    catch (Exception ex)
+                    {
+                        result3=ex.Message;
+                        if (svc != null)
+                            svc.Destroy();
+                    }
+                }
+            }
+
+            return new string[] { result, result2.Body.HelloWorldResult, result3 };
         }
 
         // GET api/values/5

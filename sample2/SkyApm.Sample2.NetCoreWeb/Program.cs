@@ -21,6 +21,20 @@ namespace SkyApm.Sample2.NetCoreWeb
         public static IWebHost BuildWebHost(string[] args) =>
     WebHost.CreateDefaultBuilder(args)
     .UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "CtSkyAPM.Agent.AspNetCore")
+             .ConfigureServices((hostBuilderContext, services) =>
+             {
+                 #region  此部分内容必须置顶
+
+                 IConfiguration config = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory)
+                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                     .Build();
+
+                 Thrift.Client.ClientInstance.Instance(config);
+
+                 hostBuilderContext.Configuration = config;
+
+                 #endregion
+             })
         .UseStartup<Startup>()
         .UseUrls("http://*:5004")
         .Build();

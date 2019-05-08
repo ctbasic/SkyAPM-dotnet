@@ -1,0 +1,9 @@
+{
+  "Services": [
+    {
+      "Name": "TcyAppDemoThrift",
+      "Host": "localhost:16001",
+      "IsMult": true
+    }
+  ]
+}

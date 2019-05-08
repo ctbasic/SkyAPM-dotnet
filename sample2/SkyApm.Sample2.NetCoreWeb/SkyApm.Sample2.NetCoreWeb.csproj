@@ -10,12 +10,29 @@
     <PackageReference Include="CtSkyAPM.Soap" Version="0.9.1-alpha" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Thrift.Client" Version="8.0.1-alpha" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="TcyApp.Demo.Thrift">
+      <HintPath>..\TcyApp.Demo.Thrift.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\ThriftClient.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="skyapm.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\" />
   </ItemGroup>
 
 </Project>

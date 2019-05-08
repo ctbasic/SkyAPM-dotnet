@@ -12,10 +12,6 @@ namespace SkyApm.Sample2.AspNet45.Controllers
     {
         public IEnumerable<string> Get()
         {
-           var httpClient =  new HttpClient(new HttpTracingHandler());
-
-            var values = httpClient.GetStringAsync("http://192.168.1.201:5001/Home/get").Result;
-
             return new string[] { "value1", "value2" };
         }
 

@@ -47,13 +47,14 @@ namespace SkyApm.Sample2.AspNet461.Controllers
             {
                 data4 = ThriftTest.Test();
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
 
                 data4 = ex.Message;
             }
 
 
-            return             Newtonsoft.Json.JsonConvert.SerializeObject(new string[] { data, data2, data3, data4 });
+            return Newtonsoft.Json.JsonConvert.SerializeObject(new string[] { data, data2, data3, data4 });
 
         }
 
