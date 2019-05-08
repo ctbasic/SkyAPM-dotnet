@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SkyApm.Soap.netcore;
 
 namespace SkyApm.Sample2.NetCoreWeb.Controllers
 {
@@ -14,7 +16,15 @@ namespace SkyApm.Sample2.NetCoreWeb.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var httpClient = HttpClientFactory.Create();
+            var result = httpClient.GetStringAsync("http://192.168.1.201:5002/Home/get").Result;
+
+
+            var instance = WebServiceFactory.GetInstance<skyapmsoap.SkyApmSoapServiceSoapClient>("http://192.168.1.201:5001/skyapmsoapservice.asmx");
+            var result2 = instance.HelloWorldAsync().GetAwaiter().GetResult();
+
+
+            return new string[] { result, result2.Body.HelloWorldResult };
         }
 
         // GET api/values/5

@@ -121,6 +121,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.NetCoreThrif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.NetCoreWeb", "sample2\SkyApm.Sample2.NetCoreWeb\SkyApm.Sample2.NetCoreWeb.csproj", "{C9B99B28-78E5-4015-A50C-822B2639E84E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet45Console", "sample2\SkyApm.Sample2.AspNet45Console\SkyApm.Sample2.AspNet45Console.csproj", "{61E89F86-B9C1-4DD2-A647-43231F9A49A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -279,6 +281,10 @@ Global
 		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -330,6 +336,7 @@ Global
 		{5891E459-9695-4CD7-8FE9-832013D1EE09} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
 		{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
 		{C9B99B28-78E5-4015-A50C-822B2639E84E} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
+		{61E89F86-B9C1-4DD2-A647-43231F9A49A1} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94C0DA2C-CCCB-4314-93A2-9809B5DD0583}
