@@ -13,11 +13,16 @@ namespace SkyApm.Sample2.NetCoreWeb.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+       // private static HttpClient httpClient = HttpClientFactory.Create();
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var httpClient = HttpClientFactory.Create();
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseProxy = false;//不加这个会非常慢
+
+          var  httpClient = HttpClientFactory.Create(handler);
+
             var result = httpClient.GetStringAsync("http://192.168.1.201:5002/Home/get").Result;
 
 
@@ -32,11 +37,11 @@ namespace SkyApm.Sample2.NetCoreWeb.Controllers
                     try
                     {
                         var info = svc.Client.GetClassRoom();
-                        result3=Newtonsoft.Json.JsonConvert.SerializeObject(info);
+                        result3 = Newtonsoft.Json.JsonConvert.SerializeObject(info);
                     }
                     catch (Exception ex)
                     {
-                        result3=ex.Message;
+                        result3 = ex.Message;
                         if (svc != null)
                             svc.Destroy();
                     }
