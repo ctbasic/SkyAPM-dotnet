@@ -178,6 +178,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Thrift, Version=0.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtThrift.1.0.1\lib\net45\Thrift.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http.Formatting">
@@ -195,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -219,6 +223,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="thriftclient\HelloWorldService.cs" />
+    <Compile Include="thriftclient\ThriftZipKinTest.cs" />
+    <Compile Include="thriftclient\UserInfo.cs" />
     <Compile Include="Web References\soapapmservice\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -248,6 +255,10 @@
     <ProjectReference Include="..\..\src\SkyApm.Soap\SkyApm.Soap.csproj">
       <Project>{56ae2797-4e20-444f-8632-7e3f5da088d6}</Project>
       <Name>SkyApm.Soap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\SkyApm.Thrift\SkyApm.Thrift.csproj">
+      <Project>{5094f871-b04c-4bbd-b3c4-de02864fd666}</Project>
+      <Name>SkyApm.Thrift</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

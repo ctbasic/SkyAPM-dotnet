@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using System.Web.Mvc;
+using SkyApm.Agent.AspNet;
 
 namespace SkyApm.Sample.AspNet45.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+         
+        // GET api/values
+        public IEnumerable<string> Get()
         {
-            ViewBag.Title = "Home Page";
+            var httpClient = HttpClientFactory.Create(new HttpTracingHandler(null));
 
-            return View();
+            var values =  httpClient.GetStringAsync("http://localhost:5001/api/values").Result;
+
+            return new string[] { "value1", "value2" };
         }
+
+        public IEnumerable<string> Error()
+        {
+            throw new Exception("error test");
+        }
+
     }
 }

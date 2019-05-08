@@ -40,7 +40,7 @@ namespace SkyApm.DotNet.CLI.Command
             var serviceNameArgument = command.Argument(
                 "service", "[Required] The ServiceName in SkyAPM");
             var serversArgument = command.Argument(
-                "servers", "[Optional] The servers address, default 'localhost:11800'");
+                "servers", "[Optional] The servers address, default '192.168.101.70:11800'");
 
             var environmentOption = command.Option("-e|--Environment",
                 "Follow the app's environment.Framework-defined values include Development, Staging, and Production",
@@ -75,7 +75,7 @@ namespace SkyApm.DotNet.CLI.Command
                 return;
             }
 
-            servers = servers ?? "localhost:11800";
+            servers = servers ?? "192.168.101.70:11800";
 
             var gRPCConfig = new Dictionary<string, dynamic>
             {

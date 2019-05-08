@@ -50,7 +50,7 @@ namespace SkyApm.Utilities.Configuration
             builder["SkyWalking"]["Transport"]["QueueSize"] = "30000";
             builder["SkyWalking"]["Transport"]["BatchSize"] = "3000";
             builder["SkyWalking"]["Transport"]["gRPC"] = new JObject();
-            builder["SkyWalking"]["Transport"]["gRPC"]["Servers"] = "localhost:11800";
+            builder["SkyWalking"]["Transport"]["gRPC"]["Servers"] = "192.168.101.70:11800";
             builder["SkyWalking"]["Transport"]["gRPC"]["Timeout"] = "10000";
             builder["SkyWalking"]["Transport"]["gRPC"]["ReportTimeout"] = "600000";
             builder["SkyWalking"]["Transport"]["gRPC"]["ConnectTimeout"] = "10000";
@@ -77,7 +77,7 @@ using Microsoft.Extensions.Configuration;
                 {"SkyWalking:Transport:ProtocolVersion", ProtocolVersions.V6},
                 {"SkyWalking:Transport:QueueSize", "30000"},
                 {"SkyWalking:Transport:BatchSize", "3000"},
-                {"SkyWalking:Transport:gRPC:Servers", "localhost:11800"},
+                {"SkyWalking:Transport:gRPC:Servers", "192.168.101.70:11800"},
                 {"SkyWalking:Transport:gRPC:Timeout", "10000"},
                 {"SkyWalking:Transport:gRPC:ReportTimeout", "600000"},
                 {"SkyWalking:Transport:gRPC:ConnectTimeout", "10000"}

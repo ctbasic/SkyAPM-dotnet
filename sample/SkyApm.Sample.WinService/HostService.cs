@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyApm.Sample.WinService.soapapmservice;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,8 @@ namespace SkyApm.Sample.WinService
         protected override void OnStart(string[] args)
         {
             // TODO: 在此处添加代码以启动服务。
+
+
         }
 
         protected override void OnStop()

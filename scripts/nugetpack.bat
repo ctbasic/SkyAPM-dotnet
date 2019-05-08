@@ -1,5 +1,5 @@
 @echo off
-set projectRootPath=E:/github.com/king311247/SkyAPM-dotnet
+set projectRootPath=F:\SkyAPM-dotnet
 
 dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Abstractions/SkyApm.Abstractions.csproj
 
@@ -24,4 +24,8 @@ dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectR
 dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Soap/SkyApm.Soap.csproj
 
 dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Thrift/SkyApm.Thrift.csproj
+
+dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Diagnostics.HttpClient/SkyApm.Diagnostics.HttpClient.csproj
+
+dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Diagnostics.AspNetCore/SkyApm.Diagnostics.AspNetCore.csproj
 pause

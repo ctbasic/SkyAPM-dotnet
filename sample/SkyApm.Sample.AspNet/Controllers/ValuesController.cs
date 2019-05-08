@@ -9,13 +9,12 @@ namespace SkyApm.Sample.AspNet.Controllers
     {
         public async Task<IHttpActionResult> Get()
         {
-            //var httpClient = new HttpClient(new HttpTracingHandler());
+           //var httpClient = new HttpClient(new HttpTracingHandler());
 
-            var httpClient = HttpClientFactory.Create(new HttpTracingHandler(null));
+            var httpClient = HttpClientFactory.Create();
 
-            //var values = await httpClient.GetStringAsync("http://localhost:5002/api/values");
+            var values = await httpClient.GetStringAsync("http://localhost:5001/api/values");
 
-            var values = await httpClient.GetStringAsync("http://192.168.1.201:3003/MvcDemo");
             return Ok();
         }
     }

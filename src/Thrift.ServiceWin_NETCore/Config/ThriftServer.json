@@ -1,0 +1,20 @@
+﻿{
+  "Services": [
+    {
+      "Name": "TcyAppDemoThrift",
+      "IsMult": true,
+      "ThriftAssembly": "TcyApp.Demo.Thrift",
+      "ThriftImplAssembly": "TcyApp.Demo.ThriftImpl",
+      "MinThreadPoolThreads": 500,
+      "MaxThreadPoolThreads": 1000,
+      "ClientTimeout": 0,
+      "Host": "",
+      "Port": 16100,
+      "Weight": 1,
+      "ZookeeperConfig": {
+        "host": "zk3.tcy365.org:2182,zk2.tcy365.org:2182,zk2.tcy365.org:2182",
+        "nodeParent": "/ThriftServer/TcyApp.Demo.Thrift"
+      }
+    }
+  ]
+}

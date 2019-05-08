@@ -19,8 +19,9 @@ namespace SkyApm.Sample.Backend
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "CtSkyAPM.Agent.AspNetCore")
                 .UseStartup<Startup>()
-                .UseUrls("http://*:5002")
+                .UseUrls("http://*:5003")
                 .Build();
     }
 }

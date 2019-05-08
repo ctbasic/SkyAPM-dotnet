@@ -1,0 +1,12 @@
+﻿{
+  "Services": [
+    {
+      "Name": "TcyAppDemoThrift",
+      "IsMult": true,
+      "ThriftAssembly": "TcyApp.Demo.Thrift",
+      "ThriftImplAssembly": "TcyApp.Demo.ThriftImpl",
+      "Host": "",
+      "Port": 16001
+    }
+  ]
+}

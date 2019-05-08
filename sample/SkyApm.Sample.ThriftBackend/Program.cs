@@ -13,6 +13,52 @@ using ThriftServer;
 
 namespace SkyApm.Sample.ThriftBackend
 {
+    public class mylogger : SkyApm.Logging.ILoggerFactory
+    {
+        public mylogger()
+        {
+        }
+
+        public SkyApm.Logging.ILogger CreateLogger(Type type)
+        {
+            return new myDefaultLogger();
+        }
+
+    }
+
+    internal class myDefaultLogger : SkyApm.Logging.ILogger
+    {
+
+        public myDefaultLogger()
+        {
+        }
+
+        public void Debug(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        public void Information(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        public void Warning(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        public void Error(string message, Exception exception)
+        {
+            Console.WriteLine(message + Environment.NewLine + exception);
+        }
+
+        public void Trace(string message)
+        {
+            Console.WriteLine(message);
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -32,6 +78,7 @@ namespace SkyApm.Sample.ThriftBackend
                     #endregion
 
                     services.AddSingleton<IHostedService, ThriftHostService>();
+                  //  services.AddSingleton<SkyApm.Logging.ILoggerFactory, mylogger>();
                 })
                 .AddSkyAPM()
                 .Build().Run();

@@ -4,7 +4,7 @@
     <PropertyGroup>
         <Description>$(Product) configuration extensions.</Description>
         <AssemblyTitle>$(PackagePrefix).Utilities.Configuration</AssemblyTitle>
-        <TargetFrameworks>net45;net461;net472;netstandard2.0</TargetFrameworks>
+        <TargetFrameworks>net45;net461;netstandard2.0</TargetFrameworks>
         <AssemblyName>$(PackagePrefix).Utilities.Configuration</AssemblyName>
         <PackageId>$(PackagePrefix).Utilities.Configuration</PackageId>
         <PackageTags>SkyWalking;APM;Diagnostics</PackageTags>

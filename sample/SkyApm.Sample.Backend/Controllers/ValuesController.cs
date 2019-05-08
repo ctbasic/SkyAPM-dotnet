@@ -14,7 +14,7 @@ namespace SkyApm.Sample.Backend.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new List<string> {"value1", "value2"};
+            return new List<string> {"value1", "valfdfdue2"};
         }
 
         // GET api/values/5

@@ -25,14 +25,14 @@ namespace SkyApm.Sample.ThriftBackend
         {
             Task.Run(() =>
             {
-                while (!runtimeEnvironment.Initialized)
-                {
-                    Task.Delay(1000);
-                }
+                //while (!runtimeEnvironment.Initialized)
+                //{
+                //    Task.Delay(1000);
+                //}
 
-                // http请求测试
-                HttpClient httpClient = new HttpClient();
-                var values = httpClient.GetStringAsync("http://www.baidu.com").Result;
+                //// http请求测试
+                //HttpClient httpClient = new HttpClient();
+                //var values = httpClient.GetStringAsync("http://www.baidu.com").Result;
 
 
                 TServerSocket serverTransport = new TServerSocket(7911, 0, false);

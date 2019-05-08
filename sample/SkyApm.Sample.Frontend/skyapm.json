@@ -1,6 +1,6 @@
 {
   "SkyWalking": {
-    "ServiceName": "asp-net-core-frontend",
+    "ServiceName": "SkyApm.Sample.Frontend",
     "Namespace": "",
     "HeaderVersions": [
       "sw6"
