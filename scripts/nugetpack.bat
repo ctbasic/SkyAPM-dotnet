@@ -24,4 +24,6 @@ dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectR
 dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Soap/SkyApm.Soap.csproj
 
 dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Thrift/SkyApm.Thrift.csproj
+
+dotnet pack -c Release --force  -o %projectRootPath%/LocalDebugPackage %projectRootPath%/src/SkyApm.Diagnostics.HttpClient/SkyApm.Diagnostics.HttpClient.csproj
 pause
