@@ -24,7 +24,7 @@ namespace SkyApm.Sample.AspNet45.Controllers
 
         public IEnumerable<string> Error()
         {
-            throw new Exception("error test");
+            throw new Exception("error te333st");
         }
 
     }

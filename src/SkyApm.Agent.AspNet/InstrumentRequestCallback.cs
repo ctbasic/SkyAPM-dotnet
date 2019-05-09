@@ -71,6 +71,11 @@ namespace SkyApm.Agent.AspNet
             context.Span.Peer = new StringOrIntValue(httpContext.Request.UserHostAddress);
             context.Span.Component = Components.ASPNET;
 
+            //var contextlocal = _tracingContext.CreateLocalSegmentContext("testlocal");
+            //contextlocal.Span.AddTag("dd", "123");
+            //_tracingContext.Release(contextlocal);
+
+
             if (httpContext.Request.IsSoapRequest())
             {
 
