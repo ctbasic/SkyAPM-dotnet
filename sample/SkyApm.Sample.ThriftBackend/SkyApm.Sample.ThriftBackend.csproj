@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="CtThrift" Version="1.0.1" />
+    <PackageReference Include="Log.TcySys.SDK" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Thrift.Client" Version="7.0.3" />

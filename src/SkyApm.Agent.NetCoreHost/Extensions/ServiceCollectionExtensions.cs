@@ -102,7 +102,7 @@ namespace SkyApm.Agent.NetCoreHost.Extensions
 
         private static IServiceCollection AddLogging(this IServiceCollection services)
         {
-            services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
+          services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
             return services;
         }
     }

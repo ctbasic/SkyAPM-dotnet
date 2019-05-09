@@ -44,6 +44,7 @@ namespace SkyApm
             var source = CancellationTokenSource.CreateLinkedTokenSource(_cancellationTokenSource.Token, cancellationToken);
             _timer = new Timer(Callback, source, DueTime, Period);
             Logger.Information($"Loaded instrument service [{GetType().FullName}].");
+
             return CustomTaskUtils.ReturnCompletedTask();
         }
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using Log.TcySys.SDKEX;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,58 +15,64 @@ using ThriftServer;
 
 namespace SkyApm.Sample.ThriftBackend
 {
-    public class mylogger : SkyApm.Logging.ILoggerFactory
-    {
-        public mylogger()
-        {
-        }
+    //public class mylogger : SkyApm.Logging.ILoggerFactory
+    //{
+    //    public mylogger()
+    //    {
+    //    }
 
-        public SkyApm.Logging.ILogger CreateLogger(Type type)
-        {
-            return new myDefaultLogger();
-        }
+    //    public SkyApm.Logging.ILogger CreateLogger(Type type)
+    //    {
+    //        return new myDefaultLogger();
+    //    }
 
-    }
+    //}
 
-    internal class myDefaultLogger : SkyApm.Logging.ILogger
-    {
+    //internal class myDefaultLogger : SkyApm.Logging.ILogger
+    //{
 
-        public myDefaultLogger()
-        {
-        }
+    //    public myDefaultLogger()
+    //    {
+    //    }
 
-        public void Debug(string message)
-        {
-            Console.WriteLine(message);
-        }
+    //    public void Debug(string message)
+    //    {
+    //        Console.WriteLine(message);
+    //    }
 
-        public void Information(string message)
-        {
-            Console.WriteLine(message);
-        }
+    //    public void Information(string message)
+    //    {
+    //        Console.WriteLine(message);
+    //    }
 
-        public void Warning(string message)
-        {
-            Console.WriteLine(message);
-        }
+    //    public void Warning(string message)
+    //    {
+    //        Console.WriteLine(message);
+    //    }
 
-        public void Error(string message, Exception exception)
-        {
-            Console.WriteLine(message + Environment.NewLine + exception);
-        }
+    //    public void Error(string message, Exception exception)
+    //    {
+    //        Console.WriteLine(message + Environment.NewLine + exception);
+    //    }
 
-        public void Trace(string message)
-        {
-            Console.WriteLine(message);
-        }
-    }
+    //    public void Trace(string message)
+    //    {
+    //        Console.WriteLine(message);
+    //    }
+    //}
+
 
     class Program
     {
         static void Main(string[] args)
         {
             IHostBuilder hostBuilder = new HostBuilder();
-            hostBuilder.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Debug))
+            hostBuilder.ConfigureLogging(
+
+                logging => {  logging.SetMinimumLevel(LogLevel.Debug);
+                       }
+                
+                )
                 .ConfigureServices((hostBuilderContext, services) =>
                 {
                     #region  此部分内容必须置顶
@@ -78,8 +86,16 @@ namespace SkyApm.Sample.ThriftBackend
                     #endregion
 
                     services.AddSingleton<IHostedService, ThriftHostService>();
-                  //  services.AddSingleton<SkyApm.Logging.ILoggerFactory, mylogger>();
-                })
+                    //services.AddSingleton<SkyApm.Logging.ILoggerFactory, mylogger>();
+
+
+                    services.AddLogging(logBuilder =>
+                    {
+                        var serviceProvider = services.BuildServiceProvider();
+                        logBuilder.AddTcyLog(config, serviceProvider.GetService<IHttpContextAccessor>());
+                    });
+                    
+                    })
                 .AddSkyAPM()
                 .Build().Run();
 

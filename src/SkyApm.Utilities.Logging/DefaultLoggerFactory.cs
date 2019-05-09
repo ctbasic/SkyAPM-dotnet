@@ -27,7 +27,7 @@ namespace SkyApm.Utilities.Logging
     using Serilog.Events;
     using Microsoft.Extensions.Logging;
 
-    using MSLoggerFactory = Microsoft.Extensions.Logging.LoggerFactory;
+    using MSLoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
 
     public class DefaultLoggerFactory : SkyApm.Logging.ILoggerFactory
     {
@@ -36,26 +36,28 @@ namespace SkyApm.Utilities.Logging
 
         private readonly MSLoggerFactory _loggerFactory;
         private readonly LoggingConfig _loggingConfig;
+        private LogEventLevel _level;
 
-        public DefaultLoggerFactory(IConfigAccessor configAccessor)
+        public DefaultLoggerFactory(IConfigAccessor configAccessor, MSLoggerFactory mSLoggerFactory)
         {
+         //   _loggerFactory = new MSLoggerFactory();
+            _loggerFactory = mSLoggerFactory;
             _loggingConfig = configAccessor.Get<LoggingConfig>();
-            _loggerFactory = new MSLoggerFactory();
-            var instrumentationConfig = configAccessor.Get<InstrumentConfig>();
 
-            var level = EventLevel(_loggingConfig.Level);
+             // var instrumentationConfig = configAccessor.Get<InstrumentConfig>();
 
-            _loggerFactory.AddSerilog(new LoggerConfiguration().MinimumLevel.Verbose().Enrich
-                .WithProperty("SourceContext", null).Enrich
-                .WithProperty(nameof(instrumentationConfig.ServiceName),
-                    instrumentationConfig.ServiceName ?? instrumentationConfig.ApplicationCode).Enrich
-                .FromLogContext().WriteTo.RollingFile(_loggingConfig.FilePath, level, outputTemplate, null, 1073741824,
-                    31, null, false, false, TimeSpan.FromMilliseconds(500)).CreateLogger());
+           _level = EventLevel(_loggingConfig.Level);
+
+            //_loggerFactory.AddSerilog(new LoggerConfiguration().MinimumLevel.Verbose().Enrich                .WithProperty("SourceContext", null).Enrich
+            //    .WithProperty(nameof(instrumentationConfig.ServiceName),
+            //        instrumentationConfig.ServiceName ?? instrumentationConfig.ApplicationCode).Enrich
+            //    .FromLogContext().WriteTo.RollingFile(_loggingConfig.FilePath, level, outputTemplate, null, 1073741824,
+            //        31, null, false, false, TimeSpan.FromMilliseconds(500)).CreateLogger());
         }
 
         public SkyApm.Logging.ILogger CreateLogger(Type type)
         {
-            return new DefaultLogger(_loggerFactory.CreateLogger(type));
+            return new DefaultLogger(_loggerFactory.CreateLogger(type),_level);
         }
 
         private static LogEventLevel EventLevel(string level)
@@ -67,16 +69,29 @@ namespace SkyApm.Utilities.Logging
     }
 #else
     using log4net;
+    using Serilog.Events;
+
     public class DefaultLoggerFactory : SkyApm.Logging.ILoggerFactory
     {
+        private LogEventLevel _level;
+
         public DefaultLoggerFactory(IConfigAccessor configAccessor)
         {
+            var _loggingConfig = configAccessor.Get<LoggingConfig>();
+            _level = EventLevel(_loggingConfig.Level);
         }
 
         public SkyApm.Logging.ILogger CreateLogger(Type type)
         {
             var logger = LogManager.GetLogger(type);
-            return new DefaultLogger(logger);
+            return new DefaultLogger(logger, Serilog.Events.LogEventLevel.Debug);
+        }
+
+        private static LogEventLevel EventLevel(string level)
+        {
+            return LogEventLevel.TryParse<LogEventLevel>(level, out var logEventLevel)
+                ? logEventLevel
+                : LogEventLevel.Error;
         }
     }
 #endif

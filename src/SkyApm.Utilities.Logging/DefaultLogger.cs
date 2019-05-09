@@ -15,46 +15,55 @@
  * limitations under the License.
  *
  */
+using Serilog.Events;
 using System;
 
 namespace SkyApm.Utilities.Logging
 {
 #if NETSTANDARD
     using Microsoft.Extensions.Logging;
+    using Serilog.Events;
     using MSLogger = Microsoft.Extensions.Logging.ILogger;
 
     internal class DefaultLogger : SkyApm.Logging.ILogger
     {
         private readonly MSLogger _readLogger;
+        private readonly LogEventLevel _level;
 
-        public DefaultLogger(MSLogger readLogger)
+        public DefaultLogger(MSLogger readLogger, LogEventLevel level)
         {
             _readLogger = readLogger;
+            _level = level;
         }
 
         public void Debug(string message)
         {
-            _readLogger.LogDebug(message);
+            if (_level <= LogEventLevel.Debug)
+                _readLogger.LogDebug(message);
         }
 
         public void Information(string message)
         {
-            _readLogger.LogInformation(message);
+            if (_level <= LogEventLevel.Information)
+                _readLogger.LogInformation(message);
         }
 
         public void Warning(string message)
         {
-            _readLogger.LogWarning(message);
+            if (_level <= LogEventLevel.Warning)
+                _readLogger.LogWarning(message);
         }
 
         public void Error(string message, Exception exception)
         {
-            _readLogger.LogError(message + Environment.NewLine + exception);
+            if (_level <= LogEventLevel.Error)
+                _readLogger.LogError(message + Environment.NewLine + exception);
         }
 
         public void Trace(string message)
         {
-            _readLogger.LogTrace(message);
+            if (_level <= LogEventLevel.Verbose)
+                _readLogger.LogTrace(message);
         }
     }
 #else
@@ -63,35 +72,42 @@ namespace SkyApm.Utilities.Logging
     internal class DefaultLogger : SkyApm.Logging.ILogger
     {
         private readonly Log4NetLogger _readLogger;
+        private readonly LogEventLevel _level;
 
-        public DefaultLogger(log4net.ILog readLogger)
+        public DefaultLogger(log4net.ILog readLogger, LogEventLevel level)
         {
             _readLogger = readLogger;
+            _level = level;
         }
 
         public void Debug(string message)
         {
-            _readLogger.Debug(message);
+            if (_level <= LogEventLevel.Debug)
+                _readLogger.Debug(message);
         }
 
         public void Information(string message)
         {
-            _readLogger.Info(message);
+            if (_level <= LogEventLevel.Information)
+                _readLogger.Info(message);
         }
 
         public void Warning(string message)
         {
-            _readLogger.Warn(message);
+            if (_level <= LogEventLevel.Warning)
+                _readLogger.Warn(message);
         }
 
         public void Error(string message, Exception exception)
         {
-            _readLogger.Error(message + Environment.NewLine + exception);
+            if (_level <= LogEventLevel.Error)
+                _readLogger.Error(message + Environment.NewLine + exception);
         }
 
         public void Trace(string message)
         {
-            _readLogger.Debug(message);
+            if (_level <= LogEventLevel.Verbose)
+                _readLogger.Debug(message);
         }
     }
 #endif
