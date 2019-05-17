@@ -15,12 +15,14 @@ namespace SkyApm.Sample.AspNet461.Controllers
         // GET: api/Default
         public IEnumerable<string> Get()
         {
+            string currentTranceId = CtSkyApmNetFxAgent.CurrentTranceId;
+
             SkyApmSoapService client = new SkyApmSoapService();
             var data = client.HelloWorld();
 
 
-           var httpClient = new HttpClient(new HttpTracingHandler());
-           // var httpClient = HttpClientFactory.Create(new HttpTracingHandler(null));
+            var httpClient = new HttpClient(new HttpTracingHandler());
+            // var httpClient = HttpClientFactory.Create(new HttpTracingHandler(null));
             HttpRequestMessage message = new HttpRequestMessage();
             message.RequestUri = new Uri("http://192.168.1.201:5001/Home/get");
             var reqResult = httpClient.SendAsync(message).Result;

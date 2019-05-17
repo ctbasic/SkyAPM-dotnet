@@ -18,6 +18,7 @@
 
 
 using SkyApm.Config;
+using SkyApm.CtCustom;
 using SkyApm.Diagnostics;
 using SkyApm.Logging;
 using SkyApm.Sampling;
@@ -29,12 +30,16 @@ using SkyApm.Transport.Grpc.V5;
 using SkyApm.Transport.Grpc.V6;
 using SkyApm.Utilities.Configuration;
 using SkyApm.Utilities.Logging;
+using SkyWalking.CtCustom;
 
 namespace SkyApm.Agent.AspNet.Extensions
 {
 #if NETSTANDARD
     
         using Microsoft.Extensions.DependencyInjection;
+    using SkyApm.CtCustom;
+    using SkyWalking.CtCustom;
+
     internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddSkyAPMCore(this IServiceCollection services)
@@ -79,6 +84,7 @@ namespace SkyApm.Agent.AspNet.Extensions
             services.AddSingleton<IExecutionService, ConnectService>();
 
             services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
+            services.AddSingleton<ICustomSegmentContextAccessor, CustomSegmentContextAccessor>();
 			services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
             return services;
         }
@@ -129,6 +135,7 @@ namespace SkyApm.Agent.AspNet.Extensions
             services.AddSingleton<IExecutionService, ConnectService>();
 
             services.AddSingleton<ILoggerFactory, DefaultLoggerFactory>();
+            services.AddSingleton<ICustomSegmentContextAccessor, CustomSegmentContextAccessor>();
             services.AddSingleton<ICtSkyApmAgent, CtSkyApmAgent>();
             return services;
         }

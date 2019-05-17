@@ -67,7 +67,7 @@ namespace SkyApm.Sample.ThriftBackend
         static void Main(string[] args)
         {
             IHostBuilder hostBuilder = new HostBuilder();
-            hostBuilder.ConfigureLogging(
+            IHost host= hostBuilder.ConfigureLogging(
 
                 logging => {  logging.SetMinimumLevel(LogLevel.Debug);
                        }
@@ -97,8 +97,9 @@ namespace SkyApm.Sample.ThriftBackend
                     
                     })
                 .AddSkyAPM()
-                .Build().Run();
-
+                .Build();
+            //DefaultServiceProvider.Instance = host.Services;
+            host.Run();
 
 
             //TServerSocket serverTransport = new TServerSocket(7911, 0, false);

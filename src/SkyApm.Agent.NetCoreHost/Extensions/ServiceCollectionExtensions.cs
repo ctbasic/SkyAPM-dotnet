@@ -20,6 +20,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SkyApm.Config;
+using SkyApm.CtCustom;
 using SkyApm.Diagnostics;
 using SkyApm.Diagnostics.HttpClient;
 using SkyApm.Logging;
@@ -33,6 +34,7 @@ using SkyApm.Transport.Grpc.V6;
 using SkyApm.Utilities.Configuration;
 using SkyApm.Utilities.DependencyInjection;
 using SkyApm.Utilities.Logging;
+using SkyWalking.CtCustom;
 
 namespace SkyApm.Agent.NetCoreHost.Extensions
 {
@@ -59,6 +61,7 @@ namespace SkyApm.Agent.NetCoreHost.Extensions
             services.AddSingleton<IEnvironmentProvider, HostingEnvironmentProvider>();
             services.AddTracing().AddSampling().AddGrpcTransport().AddLogging();
             services.AddSkyApmExtensions().AddHttpClient();
+            services.AddSingleton<ICustomSegmentContextAccessor, CustomSegmentContextAccessor>();
             return services;
         }
 

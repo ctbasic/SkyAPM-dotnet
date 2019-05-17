@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using SkyApm.Agent.AspNet.Extensions;
+using SkyApm.CtCustom;
+using SkyApm.Tracing;
 #if NETSTANDARD
 using Microsoft.Extensions.DependencyInjection;
 #else
@@ -43,5 +45,11 @@ namespace SkyApm.Agent.AspNet
 
 
         public static bool Initialized => ServiceLocator.Current.GetInstance<IRuntimeEnvironment>().Initialized;
+
+        /// <summary>
+        /// 当前tranceId
+        /// </summary>
+        public static string CurrentTranceId =>
+            ServiceLocator.Current.GetInstance<ICustomSegmentContextAccessor>().CurrentTraceId;
     }
 }

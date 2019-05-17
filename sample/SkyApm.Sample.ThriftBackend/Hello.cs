@@ -1,4 +1,7 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
+using SkyApm.CtCustom;
+using SkyApm.Sample.ThriftBackend;
 
 namespace ThriftServer
 {
@@ -11,7 +14,9 @@ namespace ThriftServer
 
         public string GetString(string msgtest)
         {
-            return msgtest + "OK";
+            string traceId = DefaultServiceProvider.Instance.GetService<ICustomSegmentContextAccessor>().CurrentTraceId;
+
+            return msgtest + "OK"+ traceId;
         }
 
         public UserInfo GetUserInfo(int userId, string userName)

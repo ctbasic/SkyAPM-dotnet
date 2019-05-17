@@ -32,10 +32,13 @@ using SkyApm.Transport.Grpc.V6;
 using SkyApm.Utilities.Configuration;
 using SkyApm.Utilities.Logging;
 using SkyApm.AspNetCore.Diagnostics;
+using SkyApm.CtCustom;
 //using SkyApm.Diagnostics.EntityFrameworkCore;
 using SkyApm.Diagnostics.HttpClient;
 //using SkyApm.Diagnostics.SqlClient;
 using SkyApm.Utilities.DependencyInjection;
+using SkyWalking.CtCustom;
+
 //using SkyApm.Diagnostics.SmartSql;
 
 namespace SkyApm.Agent.AspNetCore
@@ -64,7 +67,8 @@ namespace SkyApm.Agent.AspNetCore
             services.AddSingleton<IExecutionService, CLRStatsService>();
             services.AddTracing().AddSampling().AddGrpcTransport().AddLogging();
             services.AddSkyApmExtensions().AddAspNetCoreHosting().AddHttpClient();
-                //.AddSqlClient().AddEntityFrameworkCore(c => c.AddPomeloMysql().AddNpgsql().AddSqlite());
+            //.AddSqlClient().AddEntityFrameworkCore(c => c.AddPomeloMysql().AddNpgsql().AddSqlite());
+            services.AddSingleton<ICustomSegmentContextAccessor, CustomSegmentContextAccessor>();
             return services;
         }
 

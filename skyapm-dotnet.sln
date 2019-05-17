@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05BF0D4E-C824-4EC8-8330-36C1FC49910E}"
 EndProject
@@ -110,18 +110,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.WinService", "sample\SkyApm.Sample.WinService\SkyApm.Sample.WinService.csproj", "{C4266BBB-382C-4D2A-A79A-B327DCA86BE3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample.Aspnet461.ConsoleApp", "sample\SkyApm.Sample.Aspnet461.ConsoleApp\SkyApm.Sample.Aspnet461.ConsoleApp.csproj", "{1C2FACE2-C6FA-477F-9594-8C75A30C6E45}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample2", "sample2", "{A6901010-B7A5-4895-85B1-C527BCCAAECD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet45", "sample2\SkyApm.Sample2.AspNet45\SkyApm.Sample2.AspNet45.csproj", "{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet461", "sample2\SkyApm.Sample2.AspNet461\SkyApm.Sample2.AspNet461.csproj", "{5891E459-9695-4CD7-8FE9-832013D1EE09}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.NetCoreThrift", "sample2\SkyApm.Sample2.NetCoreThrift\SkyApm.Sample2.NetCoreThrift.csproj", "{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.NetCoreWeb", "sample2\SkyApm.Sample2.NetCoreWeb\SkyApm.Sample2.NetCoreWeb.csproj", "{C9B99B28-78E5-4015-A50C-822B2639E84E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet45Console", "sample2\SkyApm.Sample2.AspNet45Console\SkyApm.Sample2.AspNet45Console.csproj", "{61E89F86-B9C1-4DD2-A647-43231F9A49A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -265,26 +253,6 @@ Global
 		{1C2FACE2-C6FA-477F-9594-8C75A30C6E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C2FACE2-C6FA-477F-9594-8C75A30C6E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C2FACE2-C6FA-477F-9594-8C75A30C6E45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5891E459-9695-4CD7-8FE9-832013D1EE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5891E459-9695-4CD7-8FE9-832013D1EE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5891E459-9695-4CD7-8FE9-832013D1EE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5891E459-9695-4CD7-8FE9-832013D1EE09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9B99B28-78E5-4015-A50C-822B2639E84E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -332,11 +300,6 @@ Global
 		{56AE2797-4E20-444F-8632-7E3F5DA088D6} = {88AEFE60-F743-4AF3-8F55-B4B7B8079D95}
 		{C4266BBB-382C-4D2A-A79A-B327DCA86BE3} = {844CEACD-4C85-4B15-9E2B-892B01FDA4BB}
 		{1C2FACE2-C6FA-477F-9594-8C75A30C6E45} = {844CEACD-4C85-4B15-9E2B-892B01FDA4BB}
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
-		{5891E459-9695-4CD7-8FE9-832013D1EE09} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
-		{8C5F4291-3DA8-413E-8B48-1907FFDFCCBD} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
-		{C9B99B28-78E5-4015-A50C-822B2639E84E} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
-		{61E89F86-B9C1-4DD2-A647-43231F9A49A1} = {A6901010-B7A5-4895-85B1-C527BCCAAECD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94C0DA2C-CCCB-4314-93A2-9809B5DD0583}
