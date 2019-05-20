@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet45", "sample2\SkyApm.Sample2.AspNet45\SkyApm.Sample2.AspNet45.csproj", "{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet45Console", "sample2\SkyApm.Sample2.AspNet45Console\SkyApm.Sample2.AspNet45Console.csproj", "{61E89F86-B9C1-4DD2-A647-43231F9A49A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyApm.Sample2.AspNet461", "sample2\SkyApm.Sample2.AspNet461\SkyApm.Sample2.AspNet461.csproj", "{5891E459-9695-4CD7-8FE9-832013D1EE09}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3AA1ACA-541A-433F-A9F1-B5F0AC776EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61E89F86-B9C1-4DD2-A647-43231F9A49A1}.Release|Any CPU.ActiveCfg = Release|Any CPU

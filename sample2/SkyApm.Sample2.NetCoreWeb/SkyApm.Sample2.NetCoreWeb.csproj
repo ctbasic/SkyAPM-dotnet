@@ -6,10 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CtSkyAPM.Agent.AspNetCore" Version="0.9.3-alpha" />
-    <PackageReference Include="CtSkyAPM.Soap" Version="0.9.1-alpha" />
+    <PackageReference Include="CtSkyAPM.Agent.AspNetCore" Version="0.9.5" />
+    <PackageReference Include="CtSkyAPM.Soap" Version="0.9.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.4.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="4.4.*" />
     <PackageReference Include="Thrift.Client" Version="8.0.1-alpha" />
   </ItemGroup>
 
@@ -33,6 +37,10 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

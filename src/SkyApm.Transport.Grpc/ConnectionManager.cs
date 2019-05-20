@@ -61,6 +61,10 @@ namespace SkyApm.Transport.Grpc
                 }
 
                 EnsureServerAddress();
+                if (string.IsNullOrWhiteSpace(_server))
+                {
+                    return;
+                }
 
                 _channel = new Channel(_server, ChannelCredentials.Insecure);
 

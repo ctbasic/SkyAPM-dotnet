@@ -42,6 +42,15 @@ namespace SkyApm.Utilities.Configuration
             {
                 string text = System.IO.File.ReadAllText(configFile);
                 _configuration = JObject.Parse(text);
+                return;
+            }
+
+            configFile = AppDomain.CurrentDomain.BaseDirectory + "Config/Complex/skyapm.json";
+            if (File.Exists(configFile))
+            {
+                string text = System.IO.File.ReadAllText(configFile);
+                _configuration = JObject.Parse(text);
+                return;
             }
         }
 

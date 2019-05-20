@@ -189,11 +189,11 @@ namespace skyapmsoap
         {
             if ((endpointConfiguration == EndpointConfiguration.SkyApmSoapServiceSoap))
             {
-                return new System.ServiceModel.EndpointAddress("http://localhost:57055/skyapmsoapservice.asmx");
+                return new System.ServiceModel.EndpointAddress("http://192.168.1.201:5001/skyapmsoapservice.asmx");
             }
             if ((endpointConfiguration == EndpointConfiguration.SkyApmSoapServiceSoap12))
             {
-                return new System.ServiceModel.EndpointAddress("http://localhost:57055/skyapmsoapservice.asmx");
+                return new System.ServiceModel.EndpointAddress("http://192.168.1.201:5001/skyapmsoapservice.asmx");
             }
             throw new System.InvalidOperationException(string.Format("找不到名称为“{0}”的终结点。", endpointConfiguration));
         }

@@ -52,6 +52,12 @@ namespace SkyApm.Utilities.Configuration
             builder.AddJsonFile("skyapm.json", true)
                 .AddJsonFile($"skyapm.{_environmentProvider.EnvironmentName}.json", true);
 
+            builder.AddJsonFile("Config/Complex/skywalking.json", true)
+                .AddJsonFile($"skywalking.{_environmentProvider.EnvironmentName}.json", true);
+
+            builder.AddJsonFile("Config/Complex/skyapm.json", true)
+                .AddJsonFile($"skyapm.{_environmentProvider.EnvironmentName}.json", true);
+
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable(CONFIG_FILE_PATH_COMPATIBLE)))
             {
                 builder.AddJsonFile(Environment.GetEnvironmentVariable(CONFIG_FILE_PATH_COMPATIBLE), false);

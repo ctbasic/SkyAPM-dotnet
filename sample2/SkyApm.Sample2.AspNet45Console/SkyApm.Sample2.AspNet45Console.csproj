@@ -43,35 +43,35 @@
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.2.0.4\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Abstractions, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Abstractions.0.9.1-alpha\lib\net45\CtSkyAPM.Abstractions.dll</HintPath>
+    <Reference Include="CtSkyAPM.Abstractions, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Abstractions.0.9.5\lib\net45\CtSkyAPM.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Agent.AspNet, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Agent.AspNet.0.9.1-alpha\lib\net45\CtSkyAPM.Agent.AspNet.dll</HintPath>
+    <Reference Include="CtSkyAPM.Agent.AspNet, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Agent.AspNet.0.9.5\lib\net45\CtSkyAPM.Agent.AspNet.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Core, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Core.0.9.1-alpha\lib\net45\CtSkyAPM.Core.dll</HintPath>
+    <Reference Include="CtSkyAPM.Core, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Core.0.9.5\lib\net45\CtSkyAPM.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Soap, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Soap.0.9.1-alpha\lib\net45\CtSkyAPM.Soap.dll</HintPath>
+    <Reference Include="CtSkyAPM.Soap, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Soap.0.9.5\lib\net45\CtSkyAPM.Soap.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Thrift, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Thrift.0.9.1-alpha\lib\net45\CtSkyAPM.Thrift.dll</HintPath>
+    <Reference Include="CtSkyAPM.Thrift, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Thrift.0.9.5\lib\net45\CtSkyAPM.Thrift.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Transport.Grpc, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Transport.Grpc.0.9.1-alpha\lib\net45\CtSkyAPM.Transport.Grpc.dll</HintPath>
+    <Reference Include="CtSkyAPM.Transport.Grpc, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Transport.Grpc.0.9.5\lib\net45\CtSkyAPM.Transport.Grpc.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Transport.Grpc.Protocol, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Transport.Grpc.Protocol.0.9.1-alpha\lib\net45\CtSkyAPM.Transport.Grpc.Protocol.dll</HintPath>
+    <Reference Include="CtSkyAPM.Transport.Grpc.Protocol, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Transport.Grpc.Protocol.0.9.5\lib\net45\CtSkyAPM.Transport.Grpc.Protocol.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Utilities.Configuration, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Utilities.Configuration.0.9.1-alpha\lib\net45\CtSkyAPM.Utilities.Configuration.dll</HintPath>
+    <Reference Include="CtSkyAPM.Utilities.Configuration, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Utilities.Configuration.0.9.5\lib\net45\CtSkyAPM.Utilities.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Utilities.DependencyInjection, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Utilities.DependencyInjection.0.9.1-alpha\lib\net45\CtSkyAPM.Utilities.DependencyInjection.dll</HintPath>
+    <Reference Include="CtSkyAPM.Utilities.DependencyInjection, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Utilities.DependencyInjection.0.9.5\lib\net45\CtSkyAPM.Utilities.DependencyInjection.dll</HintPath>
     </Reference>
-    <Reference Include="CtSkyAPM.Utilities.Logging, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CtSkyAPM.Utilities.Logging.0.9.1-alpha\lib\net45\CtSkyAPM.Utilities.Logging.dll</HintPath>
+    <Reference Include="CtSkyAPM.Utilities.Logging, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CtSkyAPM.Utilities.Logging.0.9.5\lib\net45\CtSkyAPM.Utilities.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>

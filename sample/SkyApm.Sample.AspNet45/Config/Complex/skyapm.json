@@ -1,6 +1,6 @@
 {
   "SkyWalking": {
-    "ServiceName": "SkyApm.Sample.AspNet45",
+    "ServiceName": "SkyApm.Sample.ThriftBackend",
     "Namespace": "",
     "HeaderVersions": [
       "sw6"
@@ -10,7 +10,7 @@
       "Percentage": -1.0
     },
     "Logging": {
-      "Level": "Information",
+      "Level": "Debug",
       "FilePath": "logs/skyapm-{Date}.log"
     },
     "Transport": {
@@ -19,7 +19,7 @@
       "QueueSize": 30000,
       "BatchSize": 3000,
       "gRPC": {
-        "Servers": "localhost:11800",
+        "Servers": "192.168.101.701:11800",
         "Timeout": 10000,
         "ConnectTimeout": 10000,
         "ReportTimeout": 600000

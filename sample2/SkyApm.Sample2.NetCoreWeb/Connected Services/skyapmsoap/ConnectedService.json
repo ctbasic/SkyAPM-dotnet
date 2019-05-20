@@ -6,7 +6,7 @@
   },
   "ExtendedData": {
     "inputs": [
-      "http://localhost:57055/skyapmsoapservice.asmx"
+      "http://192.168.1.201:5001/skyapmsoapservice.asmx"
     ],
     "collectionTypes": [
       "System.Array",
