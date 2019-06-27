@@ -107,7 +107,7 @@ namespace SkyApm.Agent.AspNetCore
             services.AddSingleton<IPingCaller, PingCaller>();
             services.AddSingleton<IServiceRegister, ServiceRegister>();
             services.AddSingleton<IExecutionService, ConnectService>();
-            services.AddSingleton<ICLRStatsReporter, CLRStatsReporter>();
+            //services.AddSingleton<ICLRStatsReporter, CLRStatsReporter>();注册后会抛异常
             return services;
         }
 
