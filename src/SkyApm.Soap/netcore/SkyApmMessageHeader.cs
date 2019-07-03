@@ -1,9 +1,11 @@
 ﻿#if NETSTANDARD
+using System;
 using System.ServiceModel.Channels;
 using System.Xml;
 
 namespace SkyApm.Soap.netcore
 {
+    [Obsolete]
     internal class SkyApmMessageHeader: MessageHeader
     {
         public override string Name

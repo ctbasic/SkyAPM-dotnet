@@ -10,6 +10,7 @@ using SkyApm.Tracing.Segments;
 
 namespace SkyApm.Soap.netcore
 {
+    [Obsolete]
     internal class SkyApmClientMessageInspector : IClientMessageInspector
     {
         private readonly ITracingContext tracingContext;
@@ -29,6 +30,7 @@ namespace SkyApm.Soap.netcore
 
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
+
             var requestUri = channel.RemoteAddress.Uri;
             var actionUri = new Uri(request.Headers.Action);
             string actionName = actionUri.PathAndQuery.Replace("/", "");

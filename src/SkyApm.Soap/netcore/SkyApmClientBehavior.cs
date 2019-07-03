@@ -1,10 +1,12 @@
 ﻿#if NETSTANDARD
+using System;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
 namespace SkyApm.Soap.netcore
 {
+    [Obsolete]
     internal class SkyApmClientBehavior : IEndpointBehavior
     {
         public SkyApmClientBehavior()

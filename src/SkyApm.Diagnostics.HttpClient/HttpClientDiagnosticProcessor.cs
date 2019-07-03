@@ -21,6 +21,7 @@ using System.Net.Http;
 using SkyApm.Common;
 using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
+using SkyApm.Soap.netcore;
 
 namespace SkyApm.Diagnostics.HttpClient
 {
@@ -48,6 +49,16 @@ namespace SkyApm.Diagnostics.HttpClient
 
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Component = Common.Components.HTTPCLIENT;
+
+            if (request.IsSoapRequest())
+            {
+                string actionName = request.GetSoapActionName();
+                context.Span.AddTag(Common.Tags.URL, request.RequestUri.ToString() + "/" + actionName);
+                context.Span.AddTag(Common.Tags.PATH, request.RequestUri.PathAndQuery + "/" + actionName);
+                context.Span.AddTag(Common.Tags.HTTP_METHOD, "POST");
+                return;
+            }
+
             context.Span.AddTag(Tags.URL, request.RequestUri.ToString());
             context.Span.AddTag(Tags.HTTP_METHOD, request.Method.ToString());
         }

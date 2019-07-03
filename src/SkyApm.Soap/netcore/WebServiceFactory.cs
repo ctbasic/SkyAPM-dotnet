@@ -11,6 +11,7 @@ namespace SkyApm.Soap.netcore
     /// <summary>
     /// 基础服务信息
     /// </summary>
+    [Obsolete]
     public static class WebServiceFactory
     {
         #region Private Properties
@@ -80,7 +81,7 @@ namespace SkyApm.Soap.netcore
             // 设置skyapmclient
             System.Reflection.PropertyInfo property = createInstance.GetType().GetProperty("Endpoint");
             ServiceEndpoint endpoint = (ServiceEndpoint)property.GetValue(createInstance, null);
-            endpoint.SetSkyApmClientBehavior();
+            //endpoint.SetSkyApmClientBehavior();
             return createInstance;
         }
 
