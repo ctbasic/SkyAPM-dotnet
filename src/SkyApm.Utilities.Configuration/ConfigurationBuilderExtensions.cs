@@ -50,15 +50,19 @@ namespace SkyApm.Utilities.Configuration
             builder["SkyWalking"]["Transport"]["QueueSize"] = "30000";
             builder["SkyWalking"]["Transport"]["BatchSize"] = "3000";
             builder["SkyWalking"]["Transport"]["gRPC"] = new JObject();
-            builder["SkyWalking"]["Transport"]["gRPC"]["Servers"] = "192.168.101.70:11800";
+            builder["SkyWalking"]["Transport"]["gRPC"]["Servers"] = "127.0.0.1:11800";
             builder["SkyWalking"]["Transport"]["gRPC"]["Timeout"] = "10000";
             builder["SkyWalking"]["Transport"]["gRPC"]["ReportTimeout"] = "600000";
             builder["SkyWalking"]["Transport"]["gRPC"]["ConnectTimeout"] = "10000";
+            builder["SkyWalking"]["Custom"] = new JObject();
+            builder["SkyWalking"]["Custom"]["EndPointPolicy"] = new JObject();
+            builder["SkyWalking"]["Custom"]["EndPointPolicy"]["Policies"] = ".ashx.asmx.aspx.asp.svc";
+            builder["SkyWalking"]["Custom"]["EndPointPolicy"]["Enable"] = "true";
             return builder;
         }
     }
 #else
-using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Configuration;
     internal static class ConfigurationBuilderExtensions
     {
         public static IConfigurationBuilder AddSkyWalkingDefaultConfig(this IConfigurationBuilder builder)
@@ -80,7 +84,9 @@ using Microsoft.Extensions.Configuration;
                 {"SkyWalking:Transport:gRPC:Servers", "127.0.0.1:11800"},
                 {"SkyWalking:Transport:gRPC:Timeout", "10000"},
                 {"SkyWalking:Transport:gRPC:ReportTimeout", "600000"},
-                {"SkyWalking:Transport:gRPC:ConnectTimeout", "10000"}
+                {"SkyWalking:Transport:gRPC:ConnectTimeout", "10000"},
+                {"SkyWalking:Custom:EndPointPolicy:Policies", ".ashx.asmx.aspx.asp.svc"},
+                {"SkyWalking:Custom:EndPointPolicy:Enable", "true"},
             };
             return builder.AddInMemoryCollection(defaultConfig);
         }

@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using SkyApm.Common;
+using SkyApm.Config;
 using SkyApm.Diagnostics;
 using SkyApm.Tracing;
 using SkyApm.Tracing.Segments;
@@ -34,17 +35,26 @@ namespace SkyApm.AspNetCore.Diagnostics
         private readonly ITracingContext _tracingContext;
         private readonly IEntrySegmentContextAccessor _segmentContextAccessor;
 
+        private readonly EndPointPolicyConfig _endPointPolicyConfig;
+
         public HostingTracingDiagnosticProcessor(IEntrySegmentContextAccessor segmentContextAccessor,
-            ITracingContext tracingContext)
+            ITracingContext tracingContext, IConfigAccessor configAccessor)
         {
             _tracingContext = tracingContext;
             _segmentContextAccessor = segmentContextAccessor;
+            _endPointPolicyConfig = configAccessor.Get<EndPointPolicyConfig>();
         }
 
         [DiagnosticName("Microsoft.AspNetCore.Hosting.BeginRequest")]
         public void BeginRequest([Property] HttpContext httpContext)
         {
-            var context = _tracingContext.CreateEntrySegmentContext(httpContext.Request.Path,
+            if (IsIgnoreEntry(httpContext.Request))
+            {
+                return;
+            }
+
+            var operateName = httpContext.Request.Path.ToString().ToLower();
+            var context = _tracingContext.CreateEntrySegmentContext(operateName,
                 new HttpRequestCarrierHeaderCollection(httpContext.Request));
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Component = Common.Components.ASPNETCORE;
@@ -101,6 +111,25 @@ namespace SkyApm.AspNetCore.Diagnostics
         //[DiagnosticName("Microsoft.AspNetCore.Mvc.AfterAction")]
         public void AfterAction([Property] ActionDescriptor actionDescriptor, [Property] HttpContext httpContext)
         {
+        }
+
+        private bool IsIgnoreEntry(HttpRequest request)
+        {
+            if (!_endPointPolicyConfig.Enable)
+            {
+                return false;
+            }
+            string operateName = request.Path;
+            var extension = System.IO.Path.GetExtension(operateName);
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                return false;
+            }
+            if (_endPointPolicyConfig.Policies.Contains(extension))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

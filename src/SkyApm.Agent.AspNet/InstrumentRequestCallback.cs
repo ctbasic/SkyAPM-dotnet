@@ -32,6 +32,7 @@ namespace SkyApm.Agent.AspNet
         private readonly InstrumentConfig _config;
         private readonly ITracingContext _tracingContext;
         private readonly IEntrySegmentContextAccessor _contextAccessor;
+        private readonly EndPointPolicyConfig _endPointPolicyConfig;
 
         public InstrumentRequestCallback(IConfigAccessor configAccessor, ITracingContext tracingContext,
             IEntrySegmentContextAccessor contextAccessor)
@@ -39,6 +40,7 @@ namespace SkyApm.Agent.AspNet
             _config = configAccessor.Get<InstrumentConfig>();
             _tracingContext = tracingContext;
             _contextAccessor = contextAccessor;
+            _endPointPolicyConfig = configAccessor.Get<EndPointPolicyConfig>();
         }
 
         public void ApplicationOnBeginRequest(object sender, EventArgs e)
@@ -50,7 +52,7 @@ namespace SkyApm.Agent.AspNet
             }
             HttpContext httpContext = httpApplication.Context;
 
-            if (httpContext.Request.HttpMethod == "OPTIONS")
+            if (httpContext.Request.HttpMethod == "OPTIONS"|| IsIgnoreEntry(httpContext.Request))
             {
                 //asp.net Exclude OPTIONS request
                 return;
@@ -66,15 +68,10 @@ namespace SkyApm.Agent.AspNet
                 operateName = operateName + "/" + soapActionName;
             }
 
-            var context = _tracingContext.CreateEntrySegmentContext(operateName, new HttpRequestCarrierHeaderCollection(httpContext.Request));
+            var context = _tracingContext.CreateEntrySegmentContext(operateName.ToLower(), new HttpRequestCarrierHeaderCollection(httpContext.Request));
             context.Span.SpanLayer = SpanLayer.HTTP;
             context.Span.Peer = new StringOrIntValue(httpContext.Request.UserHostAddress);
             context.Span.Component = Components.ASPNET;
-
-            //var contextlocal = _tracingContext.CreateLocalSegmentContext("testlocal");
-            //contextlocal.Span.AddTag("dd", "123");
-            //_tracingContext.Release(contextlocal);
-
 
             if (httpContext.Request.IsSoapRequest())
             {
@@ -131,6 +128,25 @@ namespace SkyApm.Agent.AspNet
                     $"Request finished {httpContext.Response.StatusCode} {httpContext.Response.ContentType}"));
             
             _tracingContext.Release(context);
+        }
+
+        private bool IsIgnoreEntry(HttpRequest request)
+        {
+            if (!_endPointPolicyConfig.Enable)
+            {
+                return false;
+            }
+            string operateName = request.Path;
+            var extension = System.IO.Path.GetExtension(operateName);
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                return false;
+            }
+            if (_endPointPolicyConfig.Policies.Contains(extension))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

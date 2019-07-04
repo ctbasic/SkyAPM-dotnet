@@ -28,8 +28,7 @@ namespace SkyApm.Utilities.Configuration
 
     public class ConfigAccessor : IConfigAccessor
     {
-
-        JObject _configuration;
+        readonly JObject _configuration;
 
 
         public ConfigAccessor(IEnvironmentProvider environmentProvider)
@@ -41,7 +40,7 @@ namespace SkyApm.Utilities.Configuration
             if (File.Exists(configFile))
             {
                 string text = System.IO.File.ReadAllText(configFile);
-                _configuration = JObject.Parse(text);
+                _configuration.Merge(JObject.Parse(text));
                 return;
             }
 
@@ -49,8 +48,7 @@ namespace SkyApm.Utilities.Configuration
             if (File.Exists(configFile))
             {
                 string text = System.IO.File.ReadAllText(configFile);
-                _configuration = JObject.Parse(text);
-                return;
+                _configuration.Merge(JObject.Parse(text));
             }
         }
 
