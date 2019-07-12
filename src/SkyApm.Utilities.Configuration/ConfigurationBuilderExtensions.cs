@@ -36,8 +36,7 @@ namespace SkyApm.Utilities.Configuration
             builder["SkyWalking"] = new JObject();
             builder["SkyWalking"]["Namespace"] = string.Empty;
             builder["SkyWalking"]["ServiceName"] = "My_Service";
-            builder["SkyWalking"]["HeaderVersions"] = new JArray();
-            builder["SkyWalking"]["HeaderVersions"].AddAnnotation(HeaderVersions.SW6);
+            builder["SkyWalking"]["HeaderVersions"] = JArray.FromObject(new[] {HeaderVersions.SW6});
             builder["SkyWalking"]["Sampling"] = new JObject();
             builder["SkyWalking"]["Sampling"]["SamplePer3Secs"] = "-1";
             builder["SkyWalking"]["Sampling"]["Percentage"] = "-1";

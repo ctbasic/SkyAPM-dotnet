@@ -84,7 +84,7 @@ namespace SkyApm.Utilities.Logging
         public SkyApm.Logging.ILogger CreateLogger(Type type)
         {
             var logger = LogManager.GetLogger(type);
-            return new DefaultLogger(logger, Serilog.Events.LogEventLevel.Debug);
+            return new DefaultLogger(logger, _level);
         }
 
         private static LogEventLevel EventLevel(string level)
