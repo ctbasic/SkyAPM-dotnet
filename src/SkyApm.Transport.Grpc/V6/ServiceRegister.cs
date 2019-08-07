@@ -65,12 +65,21 @@ namespace SkyApm.Transport.Grpc.V6
                     {
                         ServiceName = serviceRequest.ServiceName
                     });
-                    var mapping = await client.doServiceRegisterAsync(services,
-                        null, _config.GetTimeout(), cancellationToken);
-                    foreach (var service in mapping.Services)
-                        if (service.Key == serviceRequest.ServiceName)
-                            return new NullableValue(service.Value);
-                    return NullableValue.Null;
+                    try
+                    {
+                        var mapping = await client.doServiceRegisterAsync(services,
+       null, _config.GetTimeout(), cancellationToken);
+                        foreach (var service in mapping.Services)
+                            if (service.Key == serviceRequest.ServiceName)
+                                return new NullableValue(service.Value);
+                        return NullableValue.Null;
+
+                    }
+                    catch(Exception ex)
+                    {
+                        throw ex;
+                    }
+
                 },
                 () => NullableValue.Null,
                 () => ExceptionHelpers.RegisterServiceError);
